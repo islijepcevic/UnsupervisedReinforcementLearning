@@ -1,38 +1,76 @@
-\documentclass[]{report}   % list options between brackets
-\usepackage{}              % list packages between braces
+\documentclass[a4wide,12pt]{article}
+\usepackage{a4wide}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel} 
+\usepackage{url}
 
-% type user-defined commands here
+\usepackage{color}
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.jpg,.mps,.pdf,.png,.gif}
+\usepackage{fancyvrb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+
+\usepackage{tabularx,colortbl,booktabs}
+
+\usepackage{pgf,tikz,pgfkeys,pgfplots}
+\usetikzlibrary{shapes}
+\usetikzlibrary{calc}
+\usetikzlibrary{matrix}
+\usetikzlibrary{positioning,shapes,shadows,arrows}
+
+\usepackage[pdftex,
+    bookmarks         = true,
+    bookmarksnumbered = true,
+    pdfpagemode       = None,
+    pdfstartview      = FitH,
+    pdfpagelayout     = SinglePage,
+    colorlinks        = false,
+    urlcolor          = blue,
+    pdfborder         = {0 0 0}
+    ]{hyperref}
+
+\usepackage{pgf,tikz,pgfkeys,pgfplots}
+\usetikzlibrary{shapes}
+\usetikzlibrary{calc}
+\usetikzlibrary{matrix}
+\usetikzlibrary{positioning,shapes,shadows,arrows}
+
+
+\hypersetup{
+    pdfauthor   = {Deniz Aydin, Ivan Slijepcevic},
+    pdftitle    = {report},
+    pdfcreator  = {PDFLaTeX}
+    pdfproducer = {PDFLaTeX}
+}
+
+\hypersetup{colorlinks,
+            citecolor=red,
+            filecolor=black,
+            linkcolor=red,
+            urlcolor=blue}
+
+
+\date{18 November 2013}
+
+\title{
+Unsupervised and reinforcement learning in neural networks \\
+Miniproject 1
+}
+
+\author{Deniz Aydin, Ivan Slijepcevic}
+
+\definecolor{dkgreen}{rgb}{.13,.57,.33}
+\definecolor{dkred}{rgb}{.57,.13,.33}
+
 
 \begin{document}
-
-\title{\TeX\ and \LaTeX}   % type title between braces
-\author{Ivan, Deniz Aydin}         % type author(s) between braces
-\date{\today}    % type date between braces
 \maketitle
 
-%\begin{abstract}
- % A brief introduction to \TeX\ and \LaTeX
-%\end{abstract}
-
-\chapter{Exercise 1: Stability}             % chapter 1
-\section{Question (Paper \& Pencil)}     % section 1.1
-\subsection{Part 1}       % subsection 1.1.1
-In the case of constant input and constant threshold ($x(t)=x_o$ and $\theta(t) = \theta^*$), the BCM learning rule has the form: 
-\begin{equation}
-\frac{d\omega_i}{dt} = \eta x_i(y^2-y\theta)= Aw^2-Bw
-\end{equation}
-where A and B are constants. Here, the main problem of this learning rule would be that the weights grow without bound, so they can not converge to stable values.  
-
-\chapter{Exercise 2: Selectivity and Optimization Principle}           % chapter 2
-\section{Introduction}     % section 2.1
-\subsection{Usage}         % subsection 2.1.1
-
-\chapter{Exercise 3: Explaining V1 Receptive Field Formation}           % chapter 2
-\section{Introduction}     % section 2.1
-\subsection{Usage}         % subsection 2.1.1
-
-\begin{thebibliography}{9}
-  % type bibliography here
-\end{thebibliography}
+\input{answers1.tex}
+\input{answers2.tex}
+\input{answers3.tex}
 
 \end{document}
