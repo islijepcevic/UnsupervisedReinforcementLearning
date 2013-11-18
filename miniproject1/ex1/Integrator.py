@@ -2,7 +2,7 @@ import numpy as np
 
 class Integrator:
 	
-    def __init__(self, ode, dt = 1, convergenceThreshold = 1e-5):
+    def __init__(self, ode, dt = 1, convergenceThreshold = 1e-3):
         '''ode should be of class ODE
         '''
         self.ode = ode
@@ -22,17 +22,18 @@ class Integrator:
         
         while True:
             self.nextStep()
-            if i % 100 == 0:
-                print 'w = %f\ttheta = %f\ty = %f' % (self.ode.w, self.ode.theta,
-                        self.ode.evaluateNeuron(self.ode.x0))
+            #if i % 100 == 0:
+                #print 'w = %f\ttheta = %f\ty = %f' % (self.ode.w, self.ode.theta,
+                #        self.ode.evaluateNeuron(self.ode.x0))
             
             current = self.ode.getODEState()
-            if np.linalg.norm(previous - current) <= self.convergenceThreshold:
+            if i > 2000 and np.linalg.norm(previous - current) <= self.convergenceThreshold:
                 break 
             
             previous = current
             i += 1
-            if i > 10000:
+            self.i = i
+            if i > 100000:
                 raise RuntimeError("did not converge")
             
     def nextStep(self):
