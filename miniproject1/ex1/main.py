@@ -22,7 +22,7 @@ def simulate():
             # prints "did not converge"
             print re.args[0]
            
-        print z, bcm.evaluateNeuron(bcm.x0), integrator.i
+        print z, bcm.evaluateNeuron(bcm.x0), bcm.w, bcm.theta, integrator.i
 
 if __name__ == '__main__':
     simulate()

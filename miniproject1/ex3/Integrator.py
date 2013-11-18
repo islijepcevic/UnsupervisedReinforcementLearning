@@ -1,5 +1,5 @@
 import numpy as np
-from plotter import plot
+from plotter import *
 
 class Integrator:
 	
@@ -18,6 +18,8 @@ class Integrator:
         @param neuronInput - list of patches for input
         '''
 
+        fl = open('theta.data', 'w')
+
         N = len(neuronInput)
 
         plot(self.ode, 0)
@@ -27,6 +29,13 @@ class Integrator:
 
             if (t+1)%10000 == 0:
                 plot(self.ode, t+1)
+            
+            th = str(t) + ' ' + str(self.ode.theta) + '\n'
+            fl.write(th)
+
+        fl.close()
+        plotTheta()
+
             
     def nextStep(self, inputPatch):
         ''' this will perform next step of a particular integration method'''

@@ -11,6 +11,7 @@ def loadPatches(filename):
     normalizedFilename = filename.replace('.bmp', '_normalized.data')
     normIn = open(normalizedFilename, 'r')
     normalized = np.fromstring(normIn.read()).reshape(502,758)
+    #print np.mean(normalized), np.std(normalized)
     normIn.close()
 
     patchesFilename = filename.replace('.bmp', '_patches.data')
