@@ -9,14 +9,17 @@ def simulate():
 
         print >> sys.stderr, 'simulating for %f' % z
         
+        # create new neuron with input probability z
         bcm = BCM(z)
+        # create new integrator
         integrator = ForwardDifference(bcm)
         
         try:
+            # do the integration
             integrator.integrateUntilConvergence()
-            #print z, bcm.evaluateNeuron(bcm.x0)
 
         except RuntimeError as re:
+            # prints "did not converge"
             print re.args[0]
            
         print z, bcm.evaluateNeuron(bcm.x0), integrator.i

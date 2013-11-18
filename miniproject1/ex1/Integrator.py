@@ -1,6 +1,8 @@
 import numpy as np
 
 class Integrator:
+    '''class that implements numerical integration in time
+    '''
 	
     def __init__(self, ode, dt = 1, convergenceThreshold = 1e-3):
         '''ode should be of class ODE
@@ -11,12 +13,19 @@ class Integrator:
             
             
     def integrate(self, T = 1000):
-        # integrate until T
-        # probably not needed
+        ''' integrate until T
+        not needed in exercise 1
+        '''
         for t in xrange(T):
             self.nextStep()
             
     def integrateUntilConvergence(self):
+        '''integrate until convergence
+        modifiet to do the following:
+            -> integrate minimally 2000 steps
+            -> then, if convergence met, stop
+            -> integrate maximally 100000 steps (this raises error)
+        '''
         previous = self.ode.getODEState() # numpy array
         i = 0
         
@@ -42,10 +51,12 @@ class Integrator:
             
 
 class ForwardDifference(Integrator):
+    '''basic forward euler integrator'''
     
     def nextStep(self):
-        # do something like:
-        # s(t+dt) = s(t) + dt * F(s(t)) #where s(k) is the state at step k
+        '''do something like:
+        s(t+dt) = s(t) + dt * F(s(t)) #where s(k) is the state at step k
+        '''
         
         state = self.ode.getODEState()
         nextState = state + self.dt * self.ode.evaluateODERHS(state)
