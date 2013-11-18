@@ -1,1 +1,34 @@
 \section{Selectivity and Optimization Principle}
+\subsection{Question (Paper \& Pencil)} 
+
+We can write the gradient descent on the objective function F($\omega$) as:
+\begin{eqnarray}
+\Delta \omega&=&\eta \frac{\partial F(\omega)}{\partial \omega} \\
+&\approx&\frac{\partial }{\partial \omega} \left\langle \left(\frac{y}{\sigma_y}\right)^3 \right\rangle \\
+&\approx&\frac{\partial }{\partial \omega} \left\langle \left(\frac{y}{\sqrt{\langle y^2\rangle}}\right)^3 \right\rangle \\
+&\approx&\frac{\partial }{\partial \omega} \left\langle \frac{y^3}{\langle y^2\rangle  \sqrt{\langle y^2\rangle}} \right\rangle
+\end{eqnarray}
+
+using the given $\sigma_y = \sqrt{\langle y^2\rangle}$. Using the distributive properties of the expectation operation (i.e. $\langle A + B \langle C\rangle\rangle = \langle A  \rangle + \langle B\rangle \langle C\rangle$ and $\left\langle \frac{A}{\langle B\rangle}\right\rangle = \frac{\langle A  \rangle}{\langle B  \rangle}$ we can write Eq. \ref{eq:distri}: 
+
+\begin{eqnarray}
+\Delta \omega&\approx& \frac{\partial }{\partial \omega}  \frac{\langle y^3 \rangle}{\langle y^2 \rangle \langle \sqrt{\langle y^2 \rangle}\rangle}  \label{eq:distri}\\
+\end{eqnarray}
+
+and knowing $\theta = \frac{\langle y^3\rangle}{\langle y^2\rangle}$, 
+\begin{eqnarray}
+\Delta \omega&\approx& \frac{\partial }{\partial \omega}  \frac{\theta}{ \langle \sqrt{\langle y^2 \rangle}\rangle} \\
+\end{eqnarray}
+
+taking the derivative yields: 
+\begin{eqnarray}
+\Delta \omega&\approx& \frac{\partial \theta}{\partial \omega}  \frac{1}{ \langle \sqrt{\langle y^2 \rangle}\rangle} -  \frac{\theta}{2}  {\langle y^2 \rangle}^{-3/2} \langle 2y\rangle \langle x \rangle \\
+\end{eqnarray}
+
+now noticing $\langle {\langle y^2 \rangle}^{1/2} \rangle$ has an outer expectation value operation on a scalar, we can write $ {\langle y^2 \rangle}^{1/2} $ instead.
+
+Partial derivative of $\theta$ with respect to $\omega$:
+
+\begin{eqnarray}
+\frac{\partial \theta}{\partial \omega} &=& \frac{\langle 3y^2 x\rangle}{\langle y^2 \rangle}  - \frac{\langle y^3\rangle}{\langle y^2\rangle} \langle 2yx\rangle
+\end{eqnarray}
