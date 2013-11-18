@@ -3,49 +3,49 @@
 \paragraph{Preprocessing}
 Normalization and generation of input patches was done in a separate
 preprocessing step. Preprocessing is called with
-\begin{lstlisting}[language=bash]
-$ python preprocess.py
-\end{lstlisting}
+%\begin{lstlisting}[language=bash]
+%$ python preprocess.py
+%\end{lstlisting}
 Normalization step creates the file with suffix \texttt{\_normalized.data},
 which contains a \texttt{numpy} array of normalized input image, serialized to
 string. Afterwards, the file which describes patches is created. Its suffix is
 \texttt{\_patches.data}. It contains $5000$ rows, where each row has the pixel
-coordinates of upper-left corner of the $16 \cross 16$ pixel patch. No two
+coordinates of upper-left corner of the $16 \times 16$ pixel patch. No two
 patches are identical. This way of describing patches makes sure that additional
 preprocessed data won't take too much memory, while still being easy to create
 generated patches.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.7\textwidth]{../results1/img06}
+\includegraphics[width=0.7\textwidth]{../ex3/results1/img06}
 \caption{}
 \label{fig:img06}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.7\textwidth]{../results1/img07}
+\includegraphics[width=0.7\textwidth]{../ex3/results1/img07}
 \caption{}
 \label{fig:img07}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.7\textwidth]{../results1/img09}
+\includegraphics[width=0.7\textwidth]{../ex3/results1/img09}
 \caption{}
 \label{fig:img09}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.7\textwidth]{../results1/img16}
+\includegraphics[width=0.7\textwidth]{../ex3/results1/img16}
 \caption{}
 \label{fig:img16}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.7\textwidth]{../results1/theta}
+\includegraphics[width=0.7\textwidth]{../ex3/results1/theta}
 \caption{}
 \label{fig:theta}
 \end{figure}
