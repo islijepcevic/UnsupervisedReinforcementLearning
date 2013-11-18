@@ -13,7 +13,7 @@ def normalize(data):
     return data
     
 
-def process_file(filename, patchesOutfile):
+def process_file(filename):
 
     img = Image.open(filename)
     imgData = np.array(img, float)
@@ -24,6 +24,9 @@ def process_file(filename, patchesOutfile):
     normOut = open(normalizedFilename, 'w')
     normOut.write(normalized.tostring())
     normOut.close()
+
+    patchesFilename = filename.replace('.bmp', '_patches.data')
+    patchesOutfile = open(patchesFilename, 'w')
     
     chosen = set([])
 
@@ -38,9 +41,7 @@ def process_file(filename, patchesOutfile):
 
         patchesOutfile.write('%d %d\n' % (row, col))
 
-        #patch = normalized[row:row+16, col:col+16]
-        #xon = np.maximum(patch, 0.0)
-        #xoff = -np.minimum(patch, 0.0)
+    patchesOutfile.close()
 
 def preprocess():
     files = []
@@ -48,13 +49,9 @@ def preprocess():
         name = 'images/im' + str(i) + '.bmp'
         files.append(name)
 
-    allPatches = open(outname, 'w')
-
     for filename in files:
         print 'Processing file %s' % filename
-        process_file(filename, allPatches)
-
-    allPatches.close()
+        process_file(filename)
 
 
 if __name__ == "__main__":
