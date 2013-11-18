@@ -1,4 +1,5 @@
 import numpy as np
+from plotter import plot
 
 class Integrator:
 	
@@ -11,12 +12,21 @@ class Integrator:
             
             
     def integrate(self, neuronInput, T = 1000):
-        # integrate until T
+        '''integrates the total of T timesteps
+        at each iteration presents a patch from list neuronInput
+        list iteration is circular
+        @param neuronInput - list of patches for input
+        '''
 
         N = len(neuronInput)
 
+        plot(self.ode, 0)
+
         for t in xrange(T):
             self.nextStep(neuronInput[t%N])
+
+            if (t+1)%10000 == 0:
+                plot(self.ode, t+1)
             
     def nextStep(self, inputPatch):
         ''' this will perform next step of a particular integration method'''
@@ -24,6 +34,7 @@ class Integrator:
             
 
 class ForwardDifference(Integrator):
+    '''basic forward Euler integrator'''
     
     def nextStep(self, inputPatch):
         # do something like:
@@ -33,7 +44,8 @@ class ForwardDifference(Integrator):
         nextState = state + self.dt * self.ode.evaluateODERHS(inputPatch, state)
         self.ode.updateODE(nextState)
 
-class RunkeKutta4(Integrator):
+class RungeKutta4(Integrator):
+    '''runge kutta 4 integrator'''
 
     def nextStep(self, inputPatch):
 

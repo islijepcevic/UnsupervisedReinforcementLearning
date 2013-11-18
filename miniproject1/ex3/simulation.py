@@ -2,6 +2,7 @@ from Integrator import *
 from Neuron import *
 import numpy as np
 from Patch import Patch
+import random
 
 def loadPatches(filename):
     '''loads patches from one image
@@ -51,6 +52,7 @@ def load():
 
 def run():
     patches = load()
+    random.shuffle(patches)
 
     neuron = Neuron()
     integrator = ForwardDifference(neuron)
