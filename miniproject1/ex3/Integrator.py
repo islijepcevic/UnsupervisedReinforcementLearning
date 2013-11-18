@@ -65,6 +65,6 @@ class RungeKutta4(Integrator):
         k3 = self.ode.evaluateODERHS(inputPatch, state + self.dt * 0.5 * k2)
         k4 = self.ode.evaluateODERHS(inputPatch, state + self.dt * k3)
 
-        nextState = state + self.dt / 6.0 * (k1 + 2.0*k2 + 2,0*k3 + k4)
+        nextState = state + self.dt / 6.0 * (k1 + 2.0*k2 + 2.0*k3 + k4)
 
         self.ode.updateODE(nextState)

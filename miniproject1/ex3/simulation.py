@@ -57,9 +57,16 @@ def run():
 
     neuron = Neuron()
     integrator = ForwardDifference(neuron)
-    #integrator = RunkeKutta4(neuron)
+    #integrator = RungeKutta4(neuron)
 
     integrator.integrate(patches, 150000)
+
+    #print "\nW_plus"
+    #print neuron.wPlus.reshape(16,16)
+    #print "W_minus"
+    #print neuron.wMinus.reshape(16,16)
+    #print "W"
+    #print neuron.getW()
 
 
 if __name__ == "__main__":

@@ -2,11 +2,6 @@ import numpy as np
 from PIL import Image
 import random
 
-# this file will contain all the 16x16 input patches for the simulation
-# each row will be a string form of numpy array
-# rows for xon and xoff will be alternating
-outname = 'images/patches_info.data'
-
 def normalize(data):
 
     data = (data - data.mean()) / data.std()

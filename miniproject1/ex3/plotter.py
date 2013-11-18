@@ -42,8 +42,8 @@ def plotTheta():
     data = np.array(data)
 
     plt.plot(data[:,0], data[:,1], 'b-')
-    plt.title(r'Evolution of \theta over the simulation time')
+    plt.title(r'Evolution of $\theta$ over the simulation time')
     plt.xlabel('$t$')
-    plt.ylabel(r'\theta')
+    plt.ylabel(r'$\theta$')
     plt.savefig('simulation/theta.png', bbox_inches = 0)
 

@@ -8,4 +8,4 @@ class Patch:
         '''
 
         self.xOn = np.maximum(patch, 0.0)
-        self.xOff = np.minimum(patch, 0.0)
+        self.xOff = -np.minimum(patch, 0.0)
