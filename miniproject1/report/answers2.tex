@@ -22,7 +22,7 @@ and knowing $\theta = \frac{\langle y^3\rangle}{\langle y^2\rangle}$,
 
 taking the derivative yields: 
 \begin{eqnarray}
-\Delta \omega&\approx& \frac{\partial \theta}{\partial \omega}  \frac{1}{ \langle \sqrt{\langle y^2 \rangle}\rangle} -  \frac{\theta}{2}  {\langle y^2 \rangle}^{-3/2} \langle 2y\rangle \langle x \rangle \\
+\Delta \omega&\approx& \frac{\partial \theta}{\partial \omega}  \frac{1}{ \langle \sqrt{\langle y^2 \rangle}\rangle} -  \frac{\theta}{2}  {\langle y^2 \rangle}^{-3/2} \langle 2y x \rangle \label{eq:delta_omega}
 \end{eqnarray}
 
 now noticing $\langle {\langle y^2 \rangle}^{1/2} \rangle$ has an outer expectation value operation on a scalar, we can write $ {\langle y^2 \rangle}^{1/2} $ instead.
@@ -30,5 +30,15 @@ now noticing $\langle {\langle y^2 \rangle}^{1/2} \rangle$ has an outer expectat
 Partial derivative of $\theta$ with respect to $\omega$:
 
 \begin{eqnarray}
-\frac{\partial \theta}{\partial \omega} &=& \frac{\langle 3y^2 x\rangle}{\langle y^2 \rangle}  - \frac{\langle y^3\rangle}{\langle y^2\rangle} \langle 2yx\rangle
+\frac{\partial \theta}{\partial \omega} &=& \frac{\langle 3y^2 x\rangle}{\langle y^2 \rangle}  - \frac{\langle y^3\rangle}{\langle y^2\rangle^2} \langle 2yx\rangle \\
+ &=& \frac{3\langle y^2 x\rangle}{\langle y^2 \rangle}  - \frac{\theta}{\langle y^2\rangle} 2\langle yx\rangle \\
+ &=& \frac{3\langle y^2 x\rangle-2\theta\langle yx\rangle}{\langle y^2 \rangle}  \label{eq:partial_theta}
 \end{eqnarray}
+
+If we use Eq. \ref{eq:partial_theta} in Eq. \ref{eq:delta_omega}, we get: 
+\begin{eqnarray}
+\Delta \omega&\approx&  \frac{3\langle y^2 x\rangle-2\theta\langle yx\rangle}{\langle y^2 \rangle^{3/2}}   -  \frac{\theta \langle y x \rangle}  {\langle y^2 \rangle^{3/2}} \\
+\Delta \omega&\approx&  3\frac{\langle y^2 x\rangle-\theta\langle yx\rangle}{\langle y^2 \rangle^{3/2}}  \label{eq:final_form} 
+\end{eqnarray}
+
+where Eq. \ref{eq:final_form} is of the form $\dot\omega =  xy^2 - xy\theta$.
