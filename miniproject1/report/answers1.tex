@@ -1,11 +1,32 @@
 \section{Scalability}
 
-\subsection*{Question (Paper \& Pencil)}     % subsection 1.1
+\subsection{Question (Paper \& Pencil)}     % subsection 1.1
 
-%\subsubsection{Part 1}       % subsubsection 1.1.1
+\subsubsection{Constant input $x_o$ and threshold $\theta^*$}       % subsubsection 1.1.1
 In the case of constant input and constant threshold ($x(t)=x_o$ and $\theta(t) = \theta^*$), the BCM learning rule has the form: 
 \begin{equation}
 \frac{d\omega_i}{dt} = \eta x_i(y^2-y\theta)= Aw^2-Bw
 \end{equation}
 where A and B are constants. Here, the main problem of this learning rule would be that the weights grow without bound, so they can not converge to stable values.  
+\subsubsection{Stability of fixed points}
+For the coupled differential equations: 
 
+\begin{eqnarray}
+\tau \dot \theta_M &=&  -\theta_M + y^p \\
+\dot \omega &=& \eta x (y^2-y\theta) \\
+\end{eqnarray}
+
+we assume $\tau << \eta^{-1}$, so we can assume that $\theta$ converges much faster than $\omega$. At a fixed point for p=0, we would have: 
+
+\begin{eqnarray}
+\tau \dot \theta_M &=&  -\theta_M + y^p \\
+0 &=& -\theta_M + y^p \\
+\theta_M &=& 1
+\end{eqnarray}
+and 
+\begin{eqnarray}
+\dot \omega &=& \eta x (y^2-y) \\
+\dot \omega &=& \eta x^2 \omega (\omega x- 1) 
+\end{eqnarray}
+
+so the fixed points are at $\omega = 0$ and $\omega = 1/x$. 
