@@ -27,6 +27,14 @@ def plot(neuron, it):
             print "did not save image correctly"
 
 
+def plotPatch(patch):
+
+    patch.shape = 16, 16
+    plt.pcolor(patch)
+    plt.colorbar()
+    plt.show()
+
+
 def plotTheta():
 
     fl = open('theta.data', 'r')
