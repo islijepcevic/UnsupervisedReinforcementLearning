@@ -30,7 +30,10 @@ for experiment in range(NUM_EXPTS): #simulate the paradigm using many different 
 	for j in range(MU_RANGE):
 		w_0 = copy.deepcopy(tmp_w0) # use the same weights for all inputs
 	#	print "init w_0: ",w_0
-		f = open("weights%d_expt%d_t%d"%(j , experiment,TIME_LIMIT),'wt')
+		f = open("weights_for_mu%d_expt%d_t%d"%(j , experiment,TIME_LIMIT),'wt')
+		#f_theta = open("theta_for_mu%d_expt%d_t%d"%(j , experiment,TIME_LIMIT),'wt')
+		#f_y = open("response_for_mu%d_expt%d_t%d"%(j , experiment,TIME_LIMIT),'wt')
+		#f_F = open("objective_for_mu%d_expt%d_t%d"%(j , experiment,TIME_LIMIT),'wt')
 		theta_0 = [2.5 for i in range(MU_RANGE)] 
 	#	print "init theta_0: ",theta_0
 		

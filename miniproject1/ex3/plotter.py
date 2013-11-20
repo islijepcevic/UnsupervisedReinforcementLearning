@@ -29,10 +29,15 @@ def plot(neuron, it):
 
 def plotPatch(patch):
 
-    patch.shape = 16, 16
-    plt.pcolor(patch)
+    #patch.shape = 16, 16
+    plt.pcolor(patch.xOn.reshape(16,16))
     plt.colorbar()
-    plt.show()
+    plt.savefig('simulation/patchon.png')
+
+    plt.pcolor(patch.xOff.reshape(16,16))
+    plt.colorbar()
+    plt.savefig('simulation/patchoff.png')
+   
 
 
 def plotTheta():
