@@ -134,3 +134,47 @@ we know that the stability condition for fixed points should satisfy $\frac{d\do
 and Eq. \ref{eq:ome} is always less than zero for $p > 1$. However, for $\omega = 0$ we see that $\frac{d\dot \omega}{d\omega} <0$ (Eq. \ref{eq:stab}) holds only if p =0. 
 
 Finally, $\omega = -1/x$ can satisfy the stability criteria $\frac{d\dot \omega}{d\omega} <0$ for $p < 1$, but it is not a fixed point for these p values.
+
+
+
+
+\subsection{Question (Simulation)}     % subsection 1.2
+
+\subsubsection{Code organization}
+
+Code is organized in several files. The files are described below.
+\begin{itemize}
+    \item \texttt{ODE.py} contains the abstract class \texttt{ODE} which defines
+        the interface for ordinary differential equations.
+    \item \texttt{Integrator.py} contains the abstract class \texttt{Integrator}
+        and its derived class \texttt{ForwardDifference} which numerically solve
+        an ordinary differential equation.
+    \item \texttt{BCM.py} contains the class \texttt{BCM}, which derives from
+        \texttt{ODE}. It implements the functionality of a BCM neuron, and also
+        can be treated as an ODE.
+    \item \texttt{main.py} runs the simulation for varying values of parameter
+        $z$.
+    \item \texttt{plotter.py} contains the various functionality for plotting.
+        It can also be called as a script to plot the simulated data.
+    \item \texttt{simulation.sh} is a script that runs the main simulation
+        several times and then calls the plotter.
+\end{itemize}
+
+
+\subsubsection{Comment on results}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{figures/ex1-2.png}
+\caption{Plot of a firing rate as a function of probability $z$, data from $5$
+simulations, together with exponential and polynomial curve fits.}
+\label{fig:ex12}
+\end{figure}
+
+The requested results can be seen in the Figure \ref{fig:ex12}. It can be
+observed that neuron's response decays with probability $z$ as a $4$-th order
+polynomial. This means, the more the input neuron fires, the connection between
+them becomes weaker. From this we can assume that the BCM learning rule is
+anti-Hebbian. In other words, $\theta$ is superlinear function of $y$, which
+makes the expression $x(y^2 - y\theta)$ negative, and confirms the
+anti-Hebbian learning.
