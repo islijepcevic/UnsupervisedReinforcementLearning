@@ -7,7 +7,7 @@ NUM_EXPTS = 30
 NUM_INPUTS = 5 # num of input patterns
 
 for oneInput in range(NUM_INPUTS):
-	data = [[float(line)  for line in open("weights%d_t%d_expt%d" %(oneInput ,TIME_LIMIT, i))] for i in range(NUM_EXPTS)] 
+	data = [[float(line)  for line in open("weights%d_expt%d_t%d" %(oneInput , i,TIME_LIMIT))] for i in range(NUM_EXPTS)] 
 	#load data in data[expt][neuron] format for given sim length
 	colors = ['red', 'green', 'blue', 'yellow',  'black']
 	fig = pylab.figure()
