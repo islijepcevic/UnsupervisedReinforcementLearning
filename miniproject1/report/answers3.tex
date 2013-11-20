@@ -1,14 +1,36 @@
+\clearpage
 \section{Explaining V1 Receptive Field Formation}
 
-\paragraph{Preprocessing}
+\subsection{Code organization}
+
+The code organization is similar as in the question $1.2$. The files description
+is given below.
+\begin{itemize}
+    \item \texttt{ODE.py} contains the abstract class \texttt{ODE} which defines
+        the interface for ordinary differential equations.
+    \item \texttt{Integrator.py} contains the abstract class \texttt{Integrator}
+        and its derived classes \texttt{ForwardDifference} and
+        \texttt{RungeKutta4} which numerically solve an ordinary differential
+        equation.
+    \item \texttt{Neuron.py} contains the class \texttt{Neuron}, which derives
+        from \texttt{ODE}. It implements the functionality of a BCM neuron, and
+        also can be treated as an ODE.
+    \item \texttt{Patch.py} contains the class \texttt{Patch} which holds the
+        on and off arrays of an input patch.
+    \item \texttt{preprocess.py} implements the functionality for preprocessing
+        the given images and creation of the patches.
+    \item \texttt{plotter.py} contains the various functionality for plotting.
+    \item \texttt{simulation.py} loads the preprocessed data, generates the
+        patches and runs the simulation. In the end, it stores generated plots
+        in the directory \texttt{simulation}.
+\end{itemize}
+
+\subsection{Preprocessing}
 Normalization and generation of input patches was done in a separate
 preprocessing step. Preprocessing is called with
-\begin{figure}[!htbl]
-    \begin{verbatim}
+\begin{lstlisting}[language=bash]
 $ python preprocess.py
-\end{verbatim}
-\end{figure}
-
+\end{lstlisting}
 Normalization step creates the file with suffix \texttt{\_normalized.data},
 which contains a \texttt{numpy} array of normalized input image, serialized to
 string. Afterwards, the file which describes patches is created. Its suffix is
@@ -17,6 +39,8 @@ coordinates of upper-left corner of the $16\times16$ pixel patch. No two
 patches are identical. This way of describing patches makes sure that additional
 preprocessed data won't take too much memory, while still being easy to create
 generated patches.
+
+\subsection{Simulation}
 
 \begin{figure}[h]
 \centering
@@ -58,7 +82,6 @@ meant the bigger changes in $W$, but later everything stabilized.}
 \label{fig:theta}
 \end{figure}
 
-\paragraph{Simulation}
 The simulation was performed many times. Every simulation was done with $150000$
 iterations, with $50000$ different patches. Every simulation has had different
 permutations of patches, and occasionally, patches were constructed again using

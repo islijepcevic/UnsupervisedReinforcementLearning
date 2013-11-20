@@ -1,4 +1,6 @@
 import numpy as np
+from plotter import plotOverTime
+
 
 class Integrator:
     '''class that implements numerical integration in time
@@ -21,29 +23,47 @@ class Integrator:
             
     def integrateUntilConvergence(self):
         '''integrate until convergence
-        modifiet to do the following:
-            -> integrate minimally 2000 steps
+        modified to do the following:
+            -> integrate minimally 2 000 steps
             -> then, if convergence met, stop
-            -> integrate maximally 100000 steps (this raises error)
+            -> integrate maximally 100 000 steps (this raises error)
+        new modification:
+            -> integrate 50 000 steps, this way much better behavior
+            -> convergence reaches every time (2000 was not enough, even though
+                the treshold was achieved)
+            -> if time graph plotted, oscillations can be observed after the
+                convergence - this oscillation is not low and not easily tracked
+                with code, so that's why 50 000 was chosen
         '''
         previous = self.ode.getODEState() # numpy array
         i = 0
+
+        toPlot = []
         
         while True:
+            toPlot.append( (i, self.ode.w) )
+
             self.nextStep()
             #if i % 100 == 0:
                 #print 'w = %f\ttheta = %f\ty = %f' % (self.ode.w, self.ode.theta,
                 #        self.ode.evaluateNeuron(self.ode.x0))
             
             current = self.ode.getODEState()
-            if i > 2000 and np.linalg.norm(previous - current) <= self.convergenceThreshold:
-                break 
+#            if i > 2000 and np.linalg.norm(previous - current) <= self.convergenceThreshold:
+#                break 
             
             previous = current
             i += 1
             self.i = i
-            if i > 100000:
+            if i > 50000:
+                break
+                plotOverTime(toPlot)
                 raise RuntimeError("did not converge")
+
+        #plotOverTime(toPlot)
+
+
+
             
     def nextStep(self):
         ''' this will perform next step of a particular integration method'''
