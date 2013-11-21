@@ -18,7 +18,7 @@ sig2_y = 0.0
 F = 0.0
 sigma = 10.0
 constant = 1.0/math.sqrt(2*math.pi*(sigma**2))
-
+y_avg = 0.0
 
 
 for experiment in range(NUM_EXPTS): #simulate the paradigm using many different initializations of w_0
@@ -33,6 +33,7 @@ for experiment in range(NUM_EXPTS): #simulate the paradigm using many different 
 	f = open("weights_for_expt%d_t%d"%(experiment,TIME_LIMIT),'wt')
 	f_theta = open("theta_for_expt%d_t%d"%(experiment,TIME_LIMIT),'wt')
 	f_y = open("response_for_expt%d_t%d"%(experiment,TIME_LIMIT),'wt')
+	f_y_avg = open("resp_avg_for_expt%d_t%d"%(experiment,TIME_LIMIT),'wt')	
 	f_F = open("objective_for_expt%d_t%d"%(experiment,TIME_LIMIT),'wt')	
 	for t in range(TIME_LIMIT):
 		pattern_index = random.randint(0,4)
@@ -57,7 +58,8 @@ for experiment in range(NUM_EXPTS): #simulate the paradigm using many different 
 
 		y = sum([wi*xi for wi,xi in zip(w_0,x)])
 		f_y.write(str("%lf\n"%y))
-				
+		y_avg = ((float(t)/(t+1.0)) * y_avg) + ((1.0/(t+1.0)) * (y))	
+		f_y_avg.write(str("%lf\n"%y_avg))	
 		y2= y**2
 
 		dtheta=  (1.0/tau)*(y2-theta_0)
@@ -75,4 +77,5 @@ for experiment in range(NUM_EXPTS): #simulate the paradigm using many different 
 	f_theta.close()
 	f_y.close()
 	f_F.close()
+	f_y_avg.close()
 
