@@ -3,6 +3,30 @@ import numpy as np
 
 import sys
 
+def getPointsForFitting(data):
+    zInterval = []
+    w = []
+    lastZ = None
+    count = 0
+    nbZs = -1
+    for z, w_now in zip(data[:,0], data[:,1]):
+        if z != lastZ:
+            lastZ = z
+            count = 0
+            nbZs += 1
+            zInterval.append(z)
+            w.append(0.0)
+
+        w[nbZs] = float(count)/(count+1)*w[nbZs] + w_now/(count+1.0)
+        count += 1
+
+    interval = np.array(zInterval)
+    values = np.array(w)
+
+    assert (len(interval) == len(values))
+
+    return interval, values
+
 def fit_exponential(t, y, C=0):
     y = y - C
     y = np.log(y)
@@ -10,12 +34,27 @@ def fit_exponential(t, y, C=0):
     A = np.exp(A_log)
     return A, K
 
-def exponential(data, zInterval, index):
-    C = np.mean(data[-5:, 1] - 0.05)
-    A, K = fit_exponential(zInterval, data[index:, 1], C)
+def exponential(data):
+
+    (zInterval, w) = getPointsForFitting(data)
+
+    #C = np.mean(data[-5:, 1] - 0.05)
+    C = w[-1]
+    A, K = fit_exponential(zInterval[1:-1], w[1:-1], C)
     myexp = A * np.exp(K * zInterval) + C
 
-    return myexp
+    return (zInterval, myexp)
+
+def fit_polynomial(data, deg = 2):
+
+    (zInterval, w) = getPointsForFitting(data)
+    coeffs = np.polyfit(zInterval, w, deg)
+
+    poly = np.poly1d(coeffs)
+    curve = poly(zInterval)
+
+    return zInterval, curve
+
 
 def plot():
 
@@ -49,43 +88,42 @@ def plot():
     wdata = np.array(sorted(wdata))
     thdata = np.array(sorted(thdata))
 
-#    # exponential          
-#    index = 0
-#    for z in data[:, 0]:
-#        index += 1
-#        if z == 0.38:
-#            break
-#    #zInterval = np.linspace(0.38, 0.8, len(data) - index)
-#    zInterval = data[index:, 0]
-#
-#    curve = exponential(data, zInterval, index)
-
-
+    # exponential          
+    (expInterval, curveExp) = exponential(data)
+    (polyInterval, curvePoly) = fit_polynomial(data, 4)
 
     # plot
     figY = plt.figure(1)
-    plt.plot(data[:,0], data[:,1], 'x')
-    #plt.plot(zInterval, curve, 'r-')
+    plt.plot(data[:,0], data[:,1], 'x', label="Simulated weights")
+    plt.plot(expInterval, curveExp, 'r-', label="exponential fit")
+    plt.plot(polyInterval, curvePoly, 'g-', label="polynomial order 4 fit")
     plt.xlabel('$z$')
     plt.ylabel('$y$')
     plt.title('Firing rate as a function of probability $z$')
+    plt.legend(loc='upper right', shadow=True)
     figY.show()
 
-    figW = plt.figure(2)
-    plt.plot(wdata[:,0], wdata[:,1], 'x')
-    plt.xlabel('$z$')
-    plt.ylabel('$w$')
-    plt.title('Weights as a function of probability $z$')
-    figW.show()
-    
-    figTh = plt.figure(3)
-    plt.plot(thdata[:,0], thdata[:,1], 'x')
-    plt.xlabel('$z$')
-    plt.ylabel(r'$\theta$')
-    plt.title('Threshold as a function of probability $z$')
-    figTh.show()
+    #figW = plt.figure(2)
+    #plt.plot(wdata[:,0], wdata[:,1], 'x')
+    #plt.xlabel('$z$')
+    #plt.ylabel('$w$')
+    #plt.title('Weights as a function of probability $z$')
+    #figW.show()
+    #
+    #figTh = plt.figure(3)
+    #plt.plot(thdata[:,0], thdata[:,1], 'x')
+    #plt.xlabel('$z$')
+    #plt.ylabel(r'$\theta$')
+    #plt.title('Threshold as a function of probability $z$')
+    #figTh.show()
 
     raw_input()
+
+def plotOverTime(data):
+    data = np.array(data)
+
+    plt.plot(data[:,0], data[:,1])
+    plt.show()
 
 if __name__ == '__main__':
     plot()
