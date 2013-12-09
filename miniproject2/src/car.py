@@ -2,6 +2,15 @@ from pylab import *
 
 # this is a dummy class, use it as template inserting your algorithm.
 
+"""
+STATE is encoded with position and velocity vectors (python lists with 2 elems
+each)
+
+ENVIRONMENT is encoded with provided class track in track.py
+
+ALGORITHM SKELETON is provided in race.py
+"""
+
 class car:
     
     def __init__(self):
