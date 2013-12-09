@@ -7,7 +7,8 @@ number of input neurons is variable, both for positions and velocities
 number of output neurons also
 """
 
-    def __init__(self, pneurons, pboundaries, vneurons, vboundaries, noutputs):
+    def __init__(self, pneurons, pboundaries, vneurons, vboundaries, noutputs,
+            eta, gamma, Lambda):
         """constructor
         @param pneurons number of neurons per axis for encoding position
         @param pboundaries the interval
@@ -15,6 +16,7 @@ number of output neurons also
         @param vboundaries the interval
         @param noutputs number of output neurons (should be 9 to be compatible
             with track.py)
+        @param eta, gamma, lambda - learning algorithm parameters
         """
 
         # these are "centers" of neuron encodings
@@ -40,6 +42,10 @@ number of output neurons also
             self.weigts.append( np.zeros(self.ntotal) )
             self.etraces.append( np.zeros(self.ntotal) )
             self.Qoutputs.append(0.0)
+
+        self.eta = eta
+        self.gamma = gamma
+        self.Lambda = Lambda
 
     def reset(self):
         for i in xrange(len(self.etraces)):
@@ -92,3 +98,21 @@ number of output neurons also
         diry = np.sin(-2.0*np.pi*a/ndir + np.pi/2.0)
 
         return (dirx, diry)
+
+    def decayEligibilityTrails(self, delta):
+        """decays all elibility trails"""
+        # TODO: formula states that only the traces in state 'j' decay;
+        #   but what is 'j'? Here, states are continuous. It seems natural
+        #   to decay everything.
+        #   Formulas taken from slide 39, week 18-24 November slides
+        for i in xrange(self.noutputs):
+            self.etrace[i] = self.gamma * self.Lambda * self.etrace[i]
+
+    def updateEligibilityTrail(self, takenAction, delta, reward):
+        """updates the last taken eligibility trail"""
+        self.etrace[takenAction] += reward
+
+    def updateWeights(self, delta):
+        """updates all weights"""
+        for i in xrange(self.noutputs):
+            self.weights[i] = self.weights[i] + self.eta * delta * self.etrace[i]
