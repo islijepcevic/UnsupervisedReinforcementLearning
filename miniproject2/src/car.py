@@ -62,8 +62,8 @@ class car:
         if self.time == 0:
             # TODO: no learning in first iteration, no previous step (?)
             self.neuralNetwork.computeNetworkOutput(position, velocity)
-            self.actionIndex = policy()
-            return self.neuralNetwork.getActionDirection( actionIndex )
+            self.actionIndex = self.policy()
+            return self.neuralNetwork.getActionDirection( self.actionIndex )
 
         # this copies the list, not a pointer
         Qcurrent = self.neuralNetwork.Qoutputs[:]
@@ -72,7 +72,7 @@ class car:
         Qnext = self.neuralNetwork.computeNetworkOutput(position, velocity)
         
         if learn:    
-            delta = R + self.gamma*Qnew - Qcurrent
+            delta = R + self.gamma*Qnext - Qcurrent
 
             # updating eligibility trails
             self.neuralNetwork.decayEligibilityTrails(delta)
@@ -84,16 +84,16 @@ class car:
     	self.time += 1
 
         # get action, based on policy
-        self.actionIndex = policy()
+        self.actionIndex = self.policy()
 
-    	return self.neuralNetwork.getActionDirection( actionIndex )
+    	return self.neuralNetwork.getActionDirection( self.actionIndex )
 
     def policy(self):
         """this method returns the action index based on some policy
         NOTE: it is assumed that the underlying neural network has already
         computed Q values for given position/velocity
         """
-        return eGreedyPolicy()
+        return self.eGreedyPolicy()
 
 
     def eGreedyPolicy(self):
