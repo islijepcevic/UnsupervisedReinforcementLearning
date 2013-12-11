@@ -31,9 +31,9 @@ class car:
         pboundaries = [0.0, 1.0]
         vneurons = 11
         vboundaries = [-1.0, 1.0]
-        nbActions = 9
+        self.nbActions = 9
         self.neuralNetwork = NeuralNetwork(pneurons, pboundaries, vneurons, 
-                vboundaries, nbActions, self.eta, self.gamma, self.Lambda)
+                vboundaries, self.nbActions, self.eta, self.gamma, self.Lambda)
 
         # store last take action, in order to reinforce eligibility trace
         self.actionIndex = None
@@ -63,7 +63,8 @@ class car:
             # TODO: no learning in first iteration, no previous step (?)
             self.neuralNetwork.computeNetworkOutput(position, velocity)
             self.actionIndex = self.policy()
-            return self.neuralNetwork.getActionDirection( self.actionIndex )
+            return self.actionIndex
+            #return self.neuralNetwork.getActionDirection( self.actionIndex )
 
         # this copies the list, not a pointer
         Qcurrent = self.neuralNetwork.Qoutputs[:]
@@ -86,7 +87,8 @@ class car:
         # get action, based on policy
         self.actionIndex = self.policy()
 
-    	return self.neuralNetwork.getActionDirection( self.actionIndex )
+    	#return self.neuralNetwork.getActionDirection( self.actionIndex )
+        return self.actionIndex
 
     def policy(self):
         """this method returns the action index based on some policy
@@ -109,4 +111,4 @@ class car:
             return Q.argmax()
         else:
             # TODO: should we exclude argmax index?
-            return Q[random.randint(0, len(Q)-1)]
+            return Q[randint(0, len(Q)-1)]

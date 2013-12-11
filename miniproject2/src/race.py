@@ -33,7 +33,8 @@ def train_car():
         
         # choose a first action
         action = ferrari.choose_action(position_0, velocity_0, 0)
-        
+        print type(action)
+            
         # iterate over time
         for i in arange(n_time_steps) :	
             

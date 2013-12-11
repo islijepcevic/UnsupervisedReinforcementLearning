@@ -2,7 +2,7 @@ import numpy as np
 
 
 class NeuralNetwork:
-"""this  class models the specific neural network for the car race
+    """this  class models the specific neural network for the car race
 number of input neurons is variable, both for positions and velocities
 number of output neurons also
 """
@@ -37,11 +37,11 @@ number of output neurons also
         # list (for each action) of np arrays
         self.weights = []
         self.etraces = []
-        self.Qoutputs = []
+        self.Qoutputs = np.zeros(self.noutputs)
         for i in xrange(noutputs):
-            self.weigts.append( np.zeros(self.ntotal) )
+            self.weights.append( np.zeros(self.ntotal) )
             self.etraces.append( np.zeros(self.ntotal) )
-            self.Qoutputs.append(0.0)
+            #self.Qoutputs.append(0.0)
 
         self.eta = eta
         self.gamma = gamma
@@ -90,7 +90,7 @@ number of output neurons also
         """
 
         if a == 0:
-            return [0.0, 0.0]
+            return (0.0, 0.0)
 
         ndir = self.noutputs - 1
 
@@ -110,7 +110,7 @@ number of output neurons also
 
     def updateEligibilityTrail(self, takenAction, delta, reward):
         """updates the last taken eligibility trail"""
-        self.etrace[takenAction] += reward
+        self.etrace[takenAction] += reward # TODO: NOT REWARD, PRESYNAPTIC FIRING RATE
 
     def updateWeights(self, delta):
         """updates all weights"""
