@@ -110,12 +110,13 @@ number of output neurons also
         #   but what is 'j'? Here, states are continuous. It seems natural
         #   to decay everything.
         #   Formulas taken from slide 39, week 18-24 November slides
-        for i in xrange(self.noutputs):
-            self.etrace[i] = self.gamma * self.Lambda * self.etrace[i]
+
+        # array *= scalar
+        self.etrace *= (self.gamma * self.Lambda)
 
     def updateEligibilityTrail(self, takenAction, delta, reward):
         """updates the last taken eligibility trail"""
-        self.etrace[takenAction] += reward # TODO: NOT REWARD, PRESYNAPTIC FIRING RATE
+        self.etrace[takenAction][:] += reward # TODO: NOT REWARD, PRESYNAPTIC FIRING RATE
 
     def updateWeights(self, delta):
         """updates all weights"""
