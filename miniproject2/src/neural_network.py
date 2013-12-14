@@ -20,10 +20,23 @@ number of output neurons also
         """
 
         # these are "centers" of neuron encodings
-        self.positions = np.linspace(pboundaries[0], pboundaries[1], pneurons)
-        self.velocities = np.linspace(vboundaries[0], vboundaries[1], vneurons)
+        positions = np.linspace(pboundaries[0], pboundaries[1], pneurons)
+        velocities = np.linspace(vboundaries[0], vboundaries[1], vneurons)
 
-        self.posDeviation = self.positions[1] - self.positions[0]
+        (px, py) = np.meshgrid(positions, positions, sparse = False, 
+                                        indexing = 'xy')
+
+        (vx, vy) = np.meshgrid(velocities, velocities, sparse = False,
+                                        indexing = 'xy')
+
+        # neuron centers
+        self.px = px.flatten()
+        self.py = py.flatten()
+        self.vx = vx.flatten()
+        self.vy = vy.flatten()
+
+        # neuron center distances == standard deviations for computing input values
+        self.posDeviation = positions[1] - positions[0]
         self.velDeviation = self.velocities[1] - self.velocities[0]
 
         self.npos = pneurons*pneurons
@@ -34,14 +47,10 @@ number of output neurons also
 
         self.noutputs = noutputs
 
-        # list (for each action) of np arrays
-        self.weights = []
-        self.etraces = []
-        self.Qoutputs = np.zeros(self.noutputs)
-        for i in xrange(noutputs):
-            self.weights.append( np.zeros(self.ntotal) )
-            self.etraces.append( np.zeros(self.ntotal) )
-            #self.Qoutputs.append(0.0)
+        # 2D arrays (same as matrices, but let's not complicate)
+        self.weights = np.zeros((noutputs, self.ntotal))
+        self.etraces = np.zeros((noutputs, self.ntotal))
+        self.Qoutputs = np.zeros(self.noutputs) # this one is 1D
 
         self.eta = eta
         self.gamma = gamma
@@ -53,25 +62,20 @@ number of output neurons also
 
     def _setNetworkInput(self, pos, vel):
         """given current position and velocity, set the network's input values"""
-        for i in xrange(len(self.positions)):
-            for j in xrange(len(self.positions)):
 
-                term1 = np.square(pos[0] - self.positions[i]) 
-                term2 = np.square(pos[1] - self.positions[j])
-                exponent = -(term1 + term2) / 2.0 / np.square(self.posDeviation)
+        # position inputs
+        term1 = np.square(pos[0] - self.px) 
+        term2 = np.square(pos[1] - self.py)
+        exponent = -(term1 + term2) / 2.0 / np.square(self.posDeviation)
 
-                index = i*len(self.positions) + j
-                self.inputs[index] = np.exp(exponent)
+        self.inputs[:self.npos] = np.exp(exponent)
 
-        for i in xrange(len(self.velocities)):
-            for j in xrange(len(self.velocities)):
+        # velocity inputs
+        term1 = np.square(vel[0] - self.vx) 
+        term2 = np.square(vel[1] - self.vy)
+        exponent = -(term1 + term2) / 2.0 / np.square(self.velDeviation)
 
-                term1 = np.square(vel[0] - self.velocities[i]) 
-                term2 = np.square(vel[1] - self.velocities[j])
-                exponent = -(term1 + term2) / 2.0 / np.square(self.velDeviation)
-
-                index = self.npos + i*len(self.velocities) + j
-                self.inputs[index] = np.exp(exponent)
+        self.inputs[self.npos:] = np.exp(exponent)
 
 
     def computeNetworkOutput(self, pos, vel):
@@ -79,8 +83,9 @@ number of output neurons also
         returns Q values (but also stores them)
         """
         self._setNetworkInput(pos, vel)
-        for i in xrange(len(self.Qoutputs)):
-            self.Qoutputs[i] = np.dot(self.weights[i], self.inputs)
+
+        # matrix-vector product
+        self.Qoutputs = self.weights.dot( self.inputs )
 
         return self.Qoutputs
 
@@ -114,5 +119,5 @@ number of output neurons also
 
     def updateWeights(self, delta):
         """updates all weights"""
-        for i in xrange(self.noutputs):
-            self.weights[i] = self.weights[i] + self.eta * delta * self.etrace[i]
+        # array += scalar*scalar*array, arrays are 2D
+        self.weights += self.eta * delta * self.etrace
