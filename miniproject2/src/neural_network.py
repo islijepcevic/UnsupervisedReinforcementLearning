@@ -114,9 +114,13 @@ number of output neurons also
         # array *= scalar
         self.etrace *= (self.gamma * self.Lambda)
 
-    def updateEligibilityTrail(self, takenAction, delta, reward):
-        """updates the last taken eligibility trail"""
-        self.etrace[takenAction][:] += reward # TODO: NOT REWARD, PRESYNAPTIC FIRING RATE
+    def updateEligibilityTrail(self, takenAction, delta):
+        """updates the last taken eligibility trail
+        NOTE: needs to be done before updating input state, because that way,
+        eligibility trace will be reinforced with inputs for the actually taken
+        action
+        """
+        self.etrace[takenAction][:] += self.input 
 
     def updateWeights(self, delta):
         """updates all weights"""
