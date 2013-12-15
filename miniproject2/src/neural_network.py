@@ -20,6 +20,7 @@ number of output neurons also
         """
 
         # these are "centers" of neuron encodings
+<<<<<<< HEAD
         pos_x = np.linspace(pos_boundaries[0], pos_boundaries[1], pos_neurons)
         pos_y = np.linspace(pos_boundaries[0], pos_boundaries[1], pos_neurons)        
         vel_x = np.linspace(vel_boundaries[0], vel_boundaries[1], vel_neurons)
@@ -49,12 +50,46 @@ number of output neurons also
         self.weights = np.zeros((nb_outputs,self.nb_all_cells))
         self.el_traces = np.zeros((nb_outputs,self.nb_all_cells))
         self.Q_outputs = np.zeros(self.nb_outputs)
+=======
+        positions = np.linspace(pboundaries[0], pboundaries[1], pneurons)
+        velocities = np.linspace(vboundaries[0], vboundaries[1], vneurons)
+
+        (px, py) = np.meshgrid(positions, positions, sparse = False, 
+                                        indexing = 'xy')
+
+        (vx, vy) = np.meshgrid(velocities, velocities, sparse = False,
+                                        indexing = 'xy')
+
+        # neuron centers
+        self.px = px.flatten()
+        self.py = py.flatten()
+        self.vx = vx.flatten()
+        self.vy = vy.flatten()
+
+        # neuron center distances == standard deviations for computing input values
+        self.posDeviation = positions[1] - positions[0]
+        self.velDeviation = self.velocities[1] - self.velocities[0]
+
+        self.npos = pneurons*pneurons
+        self.nvel = vneurons*vneurons
+        self.ntotal = self.npos + self.nvel
+
+        self.inputs = np.zeros(self.ntotal)
+
+        self.noutputs = noutputs
+
+        # 2D arrays (same as matrices, but let's not complicate)
+        self.weights = np.zeros((noutputs, self.ntotal))
+        self.etraces = np.zeros((noutputs, self.ntotal))
+        self.Qoutputs = np.zeros(self.noutputs) # this one is 1D
+>>>>>>> 66ae84d7929283cc182ef89f797466e5a8932b86
 
         self.eta = eta
         self.gamma = gamma
         self.Lambda = Lambda
         
     def reset(self):
+<<<<<<< HEAD
         self.el_traces = np.zeros((params.NB_OUTPUTS,self.nb_all_cells))
 
     def _set_network_input(self, pos, vel):
@@ -82,6 +117,41 @@ number of output neurons also
        
         
     def get_action_direction(self, a):
+=======
+        for i in xrange(len(self.etraces)):
+            self.etraces[i] = np.zeros(self.ntotal)
+
+    def _setNetworkInput(self, pos, vel):
+        """given current position and velocity, set the network's input values"""
+
+        # position inputs
+        term1 = np.square(pos[0] - self.px) 
+        term2 = np.square(pos[1] - self.py)
+        exponent = -(term1 + term2) / 2.0 / np.square(self.posDeviation)
+
+        self.inputs[:self.npos] = np.exp(exponent)
+
+        # velocity inputs
+        term1 = np.square(vel[0] - self.vx) 
+        term2 = np.square(vel[1] - self.vy)
+        exponent = -(term1 + term2) / 2.0 / np.square(self.velDeviation)
+
+        self.inputs[self.npos:] = np.exp(exponent)
+
+
+    def computeNetworkOutput(self, pos, vel):
+        """computes Q values
+        returns Q values (but also stores them)
+        """
+        self._setNetworkInput(pos, vel)
+
+        # matrix-vector product
+        self.Qoutputs = self.weights.dot( self.inputs )
+
+        return self.Qoutputs
+
+    def getActionDirection(self, a):
+>>>>>>> 66ae84d7929283cc182ef89f797466e5a8932b86
         """computes the direction for action a
         @param a - integer, index to Q value list
         """
@@ -102,14 +172,29 @@ number of output neurons also
         #   but what is 'j'? Here, states are continuous. It seems natural
         #   to decay everything.
         #   Formulas taken from slide 39, week 18-24 November slides
+<<<<<<< HEAD
         self.etrace= self.gamma * self.Lambda * self.etrace
 
     def update_eligibility_trail(self, takenAction, delta, reward):
         """updates the last taken eligibility trail"""
         self.etrace[takenAction] += self.inputs #which r_j? weighted?? # TODO
+=======
+
+        # array *= scalar
+        self.etrace *= (self.gamma * self.Lambda)
+
+    def updateEligibilityTrail(self, takenAction, delta):
+        """updates the last taken eligibility trail
+        NOTE: needs to be done before updating input state, because that way,
+        eligibility trace will be reinforced with inputs for the actually taken
+        action
+        """
+        self.etrace[takenAction][:] += self.input 
+>>>>>>> 66ae84d7929283cc182ef89f797466e5a8932b86
 
     def update_weights(self, delta):
         """updates all weights"""
+<<<<<<< HEAD
         self.weights = self.weights + self.eta * delta * self.etrace # TODO check this works
             
 if __name__ == "__main__":
@@ -119,3 +204,7 @@ if __name__ == "__main__":
     print "traces: ",new_network.el_traces
     print "pos_y:",new_network.positions_y[1][0]-new_network.positions_y[0][0]    
     print "vel_y:",new_network.velocities_y
+=======
+        # array += scalar*scalar*array, arrays are 2D
+        self.weights += self.eta * delta * self.etrace
+>>>>>>> 66ae84d7929283cc182ef89f797466e5a8932b86

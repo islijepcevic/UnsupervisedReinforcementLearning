@@ -55,6 +55,14 @@ class car:
             return self.action_index
             #return self.neuralNetwork.getActionDirection( self.action_index )
 
+        if learn:
+            # updating eligibility trails
+            # do it before everything else, since eligibility traces are
+            # reinforced with the input of the taken action (== previous action)
+            # so before we change input to new position
+            self.neuralNetwork.decayEligibilityTrails(delta)
+            self.neuralNetwork.updateEligibilityTrail(self.actionIndex, delta)
+
         # this copies the list, not a pointer
         Q_current = self.neuralNetwork.Q_outputs[:]
 
@@ -64,10 +72,13 @@ class car:
         if learn:    
             delta = R + self.gamma*Q_next - Q_current
 
+<<<<<<< HEAD
             # updating eligibility trails
             self.neuralNetwork.decay_eligibility_trails(delta)
             self.neuralNetwork.update_eligibility_trail(self.action_index, delta, R)
 
+=======
+>>>>>>> 66ae84d7929283cc182ef89f797466e5a8932b86
             # updating weights
             self.neuralNetwork.update_weights(delta)
             
