@@ -29,12 +29,7 @@ number of output neurons also
         self.positions_x, self.positions_y = np.meshgrid(pos_x, pos_y)
         self.velocities_x, self.velocities_y = np.meshgrid(vel_x, vel_y)
         
-        # 31,31 into 961 and 11 by 11 into 121
-        '''self.positions_x = self.positions_x.flatten() 
-        self.positions_y= self.positions_y.flatten()
-        self.velocities_x = self.velocities_x.flatten()
-        self.velocities_y = self.velocities_y.flatten()
-        '''
+
         self.pos_deviation = self.positions_y[1][0] - self.positions_y[0][0]
         self.vel_deviation = self.velocities_y[1][0] - self.velocities_y[0][0]
         
@@ -50,7 +45,10 @@ number of output neurons also
         self.weights = np.zeros((nb_outputs,self.nb_all_cells))
         self.el_traces = np.zeros((nb_outputs,self.nb_all_cells))
         self.Q_outputs = np.zeros(self.nb_outputs)
-
+        
+        # not sure why you added the stuff below again -- it's the same as what's above this comment. 
+        
+        '''     
         positions = np.linspace(pboundaries[0], pboundaries[1], pneurons)
         velocities = np.linspace(vboundaries[0], vboundaries[1], vneurons)
 
@@ -60,6 +58,7 @@ number of output neurons also
         (vx, vy) = np.meshgrid(velocities, velocities, sparse = False,
                                         indexing = 'xy')
 
+        # No flattening just yet -- otherwise we can't compute the activity of the place cells
         # neuron centers
         self.px = px.flatten()
         self.py = py.flatten()
@@ -82,7 +81,7 @@ number of output neurons also
         self.weights = np.zeros((noutputs, self.ntotal))
         self.etraces = np.zeros((noutputs, self.ntotal))
         self.Qoutputs = np.zeros(self.noutputs) # this one is 1D
-
+        '''
 
         self.eta = eta
         self.gamma = gamma
