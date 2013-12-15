@@ -72,13 +72,12 @@ class car:
         if learn:    
             delta = R + self.gamma*Q_next - Q_current
 
-<<<<<<< HEAD
+
             # updating eligibility trails
             self.neuralNetwork.decay_eligibility_trails(delta)
             self.neuralNetwork.update_eligibility_trail(self.action_index, delta, R)
 
-=======
->>>>>>> 66ae84d7929283cc182ef89f797466e5a8932b86
+
             # updating weights
             self.neuralNetwork.update_weights(delta)
             
