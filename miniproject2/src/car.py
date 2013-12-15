@@ -2,7 +2,7 @@ from pylab import *
 from neural_network import NeuralNetwork
 import numpy as np
 from random import random
-
+import params
 # this is a dummy class, use it as template inserting your algorithm.
 
 """
@@ -18,25 +18,14 @@ class car:
     
     def __init__(self):
 
-        # setup your parameters here.
+        # Deniz: moved parameters to params.py
         
-        self.eta = 0.005
-        self.gamma = 0.95
-        self.Lambda = 0.95
-        self.epsilon = 0.1
-
         self.time = 0
-        
-        pneurons = 31
-        pboundaries = [0.0, 1.0]
-        vneurons = 11
-        vboundaries = [-1.0, 1.0]
-        self.nbActions = 9
-        self.neuralNetwork = NeuralNetwork(pneurons, pboundaries, vneurons, 
-                vboundaries, self.nbActions, self.eta, self.gamma, self.Lambda)
+        self.neuralNetwork = NeuralNetwork(params.POS_NEURONS, params.POS_RANGE, params.VEL_NEURONS, 
+                params.VEL_RANGE, params.NB_OUTPUTS, params.ETA, params.GAMMA, params.LAMBDA)
 
         # store last take action, in order to reinforce eligibility trace
-        self.actionIndex = None
+        self.action_index = None
 
     def reset(self) :
     
@@ -44,7 +33,7 @@ class car:
         
         self.time = 0
         self.neuralNetwork.reset()
-        self.actionIndex = None
+        self.action_index = None
 
     def choose_action(self, position, velocity, R, learn = True):
         """This method must:
@@ -61,51 +50,51 @@ class car:
 
         if self.time == 0:
             # TODO: no learning in first iteration, no previous step (?)
-            self.neuralNetwork.computeNetworkOutput(position, velocity)
-            self.actionIndex = self.policy()
-            return self.actionIndex
-            #return self.neuralNetwork.getActionDirection( self.actionIndex )
+            self.neuralNetwork.compute_network_output(position, velocity)
+            self.action_index = self.policy()
+            return self.action_index
+            #return self.neuralNetwork.getActionDirection( self.action_index )
 
         # this copies the list, not a pointer
-        Qcurrent = self.neuralNetwork.Qoutputs[:]
+        Q_current = self.neuralNetwork.Q_outputs[:]
 
         # update neural network to next state
-        Qnext = self.neuralNetwork.computeNetworkOutput(position, velocity)
-        
+        self.neuralNetwork.compute_network_output(position, velocity)
+        Q_next = self.neuralNetwork.Q_outputs
         if learn:    
-            delta = R + self.gamma*Qnext - Qcurrent
+            delta = R + self.gamma*Q_next - Q_current
 
             # updating eligibility trails
-            self.neuralNetwork.decayEligibilityTrails(delta)
-            self.neuralNetwork.updateEligibilityTrail(self.actionIndex, delta, R)
+            self.neuralNetwork.decay_eligibility_trails(delta)
+            self.neuralNetwork.update_eligibility_trail(self.action_index, delta, R)
 
             # updating weights
-            self.neuralNetwork.updateWeights(delta)
+            self.neuralNetwork.update_weights(delta)
             
-    	self.time += 1
+        self.time += 1
 
         # get action, based on policy
-        self.actionIndex = self.policy()
+        self.action_index = self.policy()
 
-    	#return self.neuralNetwork.getActionDirection( self.actionIndex )
-        return self.actionIndex
+        #return self.neuralNetwork.getActionDirection( self.action_index )
+        return self.action_index
 
     def policy(self):
         """this method returns the action index based on some policy
         NOTE: it is assumed that the underlying neural network has already
         computed Q values for given position/velocity
         """
-        return self.eGreedyPolicy()
+        return self.e_greedy_policy()
 
 
-    def eGreedyPolicy(self):
+    def e_greedy_policy(self):
         """this method returns the action index based on epsilon-greedy policy
         NOTE: it is assumed that the underlying neural network has already
         computed Q values for given position/velocity
         """
 
-        Q = self.neuralNetwork.Qoutputs
-        assert len(Q) == self.nbActions
+        Q = self.neuralNetwork.Q_outputs
+        assert len(Q) == self.nb_actions
 
         if (np.random.random() < 1-self.epsilon):
             return Q.argmax()
