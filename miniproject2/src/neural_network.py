@@ -37,7 +37,7 @@ number of output neurons also
 
         # neuron center distances == standard deviations for computing input values
         self.posDeviation = positions[1] - positions[0]
-        self.velDeviation = self.velocities[1] - self.velocities[0]
+        self.velDeviation = velocities[1] - velocities[0]
 
         self.npos = pneurons*pneurons
         self.nvel = vneurons*vneurons
