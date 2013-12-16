@@ -60,8 +60,8 @@ class car:
             # do it before everything else, since eligibility traces are
             # reinforced with the input of the taken action (== previous action)
             # so before we change input to new position
-            self.neuralNetwork.decayEligibilityTrails(delta)
-            self.neuralNetwork.updateEligibilityTrail(self.actionIndex, delta)
+            self.neuralNetwork.decay_eligibility_trails()
+            self.neuralNetwork.update_eligibility_trail(self.action_index)
 
         # this copies the list, not a pointer
         Q_current = self.neuralNetwork.Q_outputs[:]
@@ -71,11 +71,6 @@ class car:
         Q_next = self.neuralNetwork.Q_outputs
         if learn:    
             delta = R + self.gamma*Q_next - Q_current
-
-
-            # updating eligibility trails
-            self.neuralNetwork.decay_eligibility_trails(delta)
-            self.neuralNetwork.update_eligibility_trail(self.action_index, delta, R)
 
 
             # updating weights
@@ -110,4 +105,5 @@ class car:
             return Q.argmax()
         else:
             # TODO: should we exclude argmax index?
+            # Deniz: nah, this is good :D
             return Q[randint(0, len(Q)-1)]

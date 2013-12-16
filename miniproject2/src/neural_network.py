@@ -46,7 +46,7 @@ number of output neurons also
         self.el_traces = np.zeros((nb_outputs,self.nb_all_cells))
         self.Q_outputs = np.zeros(self.nb_outputs)
         
-        # not sure why you added the stuff below again -- it's the same as what's above this comment. 
+        # Deniz:  not sure why you added the stuff below again -- it's the same as what's above this comment...? 
         
         '''     
         positions = np.linspace(pboundaries[0], pboundaries[1], pneurons)
@@ -58,9 +58,9 @@ number of output neurons also
         (vx, vy) = np.meshgrid(velocities, velocities, sparse = False,
                                         indexing = 'xy')
 
-        # No flattening just yet -- otherwise we can't compute the activity of the place cells
+        # Deniz: No flattening just yet -- otherwise we can't compute the activity of the place cells
         # neuron centers
-        self.px = px.flatten()
+        self.px = px.flatten() # FLATTEN POSITIONS AND VELS LIKE THIS
         self.py = py.flatten()
         self.vx = vx.flatten()
         self.vy = vy.flatten()
@@ -114,42 +114,15 @@ number of output neurons also
         self.Q_outputs= np.dot(self.weights, self.inputs)
         # Deniz: removed return statement for class attribute self.Q_outputs. 
        
-        
+    '''     
+    # Deniz: Hey Ivan, what is this below?
     def get_action_direction(self, a):
 
         for i in xrange(len(self.etraces)):
             self.etraces[i] = np.zeros(self.ntotal)
+    '''
 
-    def _setNetworkInput(self, pos, vel):
-        """given current position and velocity, set the network's input values"""
-
-        # position inputs
-        term1 = np.square(pos[0] - self.px) 
-        term2 = np.square(pos[1] - self.py)
-        exponent = -(term1 + term2) / 2.0 / np.square(self.posDeviation)
-
-        self.inputs[:self.npos] = np.exp(exponent)
-
-        # velocity inputs
-        term1 = np.square(vel[0] - self.vx) 
-        term2 = np.square(vel[1] - self.vy)
-        exponent = -(term1 + term2) / 2.0 / np.square(self.velDeviation)
-
-        self.inputs[self.npos:] = np.exp(exponent)
-
-
-    def computeNetworkOutput(self, pos, vel):
-        """computes Q values
-        returns Q values (but also stores them)
-        """
-        self._setNetworkInput(pos, vel)
-
-        # matrix-vector product
-        self.Qoutputs = self.weights.dot( self.inputs )
-
-        return self.Qoutputs
-
-    def getActionDirection(self, a):
+    def get_action_direction(self, a):
 
         """computes the direction for action a
         @param a - integer, index to Q value list
@@ -172,24 +145,11 @@ number of output neurons also
         #   to decay everything.
         #   Formulas taken from slide 39, week 18-24 November slides
 
-        self.etrace= self.gamma * self.Lambda * self.etrace
+        self.etrace *= (self.gamma * self.Lambda) 
 
     def update_eligibility_trail(self, takenAction, delta, reward):
         """updates the last taken eligibility trail"""
-        self.etrace[takenAction] += self.inputs #which r_j? weighted?? # TODO
-
-
-        # array *= scalar
-        self.etrace *= (self.gamma * self.Lambda)
-
-    def updateEligibilityTrail(self, takenAction, delta):
-        """updates the last taken eligibility trail
-        NOTE: needs to be done before updating input state, because that way,
-        eligibility trace will be reinforced with inputs for the actually taken
-        action
-        """
-        self.etrace[takenAction][:] += self.input 
-
+        self.etrace[takenAction] += self.inputs # TODO: which r_j? weighted??
 
     def update_weights(self, delta):
         """updates all weights"""
@@ -203,7 +163,7 @@ if __name__ == "__main__":
     print "traces: ",new_network.el_traces
     print "pos_y:",new_network.positions_y[1][0]-new_network.positions_y[0][0]    
     print "vel_y:",new_network.velocities_y
-
+    
         # array += scalar*scalar*array, arrays are 2D
-        self.weights += self.eta * delta * self.etrace
+    #self.weights += self.eta * delta * self.etrace
 
