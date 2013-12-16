@@ -21,18 +21,28 @@ number of output neurons also
 
         # these are "centers" of neuron encodings
 
-        pos_x = np.linspace(pos_boundaries[0], pos_boundaries[1], pos_neurons)
-        pos_y = np.linspace(pos_boundaries[0], pos_boundaries[1], pos_neurons)        
-        vel_x = np.linspace(vel_boundaries[0], vel_boundaries[1], vel_neurons)
-        vel_y = np.linspace(vel_boundaries[0], vel_boundaries[1], vel_neurons)
+        positions = np.linspace(pos_boundaries[0], pos_boundaries[1], pos_neurons)       
+        velocities = np.linspace(vel_boundaries[0], vel_boundaries[1], vel_neurons)
+       
         
-        self.positions_x, self.positions_y = np.meshgrid(pos_x, pos_y)
-        self.velocities_x, self.velocities_y = np.meshgrid(vel_x, vel_y)
-        
-
-        self.pos_deviation = self.positions_y[1][0] - self.positions_y[0][0]
-        self.vel_deviation = self.velocities_y[1][0] - self.velocities_y[0][0]
-        
+        (px, py) = np.meshgrid(positions, positions, sparse = False, 
+                                        indexing = 'xy')
+        self.pos_deviation = px[0][1]-px[0][0]
+        (vx, vy) = np.meshgrid(velocities, velocities, sparse = False,
+                                        indexing = 'xy')
+        self.vel_deviation = vx[0][1] - vx[0][0]
+        # Deniz: No flattening just yet -- otherwise we can't compute the activity of the place cells
+        # neuron centers
+        self.positions_x = px.flatten() # FLATTEN POSITIONS AND VELS LIKE THIS
+        self.positions_y = py.flatten()
+        self.velocities_x = vx.flatten()
+        self.velocities_y = vy.flatten()
+        '''
+        print "pos x:", self.positions_x
+        print "pos y:", self.positions_y
+        print "vel x:", self.velocities_x
+        print "vel y:", self.velocities_y
+        '''      
         self.nb_pos_cells = pos_neurons*pos_neurons
         self.nb_vel_cells = vel_neurons*vel_neurons
         self.nb_all_cells = self.nb_pos_cells + self.nb_vel_cells
@@ -48,7 +58,7 @@ number of output neurons also
         
         # Deniz:  not sure why you added the stuff below again -- it's the same as what's above this comment...? 
         
-        '''     
+        '''
         positions = np.linspace(pboundaries[0], pboundaries[1], pneurons)
         velocities = np.linspace(vboundaries[0], vboundaries[1], vneurons)
 
@@ -94,19 +104,22 @@ number of output neurons also
     def _set_network_input(self, pos, vel):
         # given current position and velocity, set the position and velocity inputs
         term1 = np.square(pos[0] - self.positions_x)
+        #    print  "term1:", term1
         term2 = np.square(pos[1] - self.positions_y)
+        #print "term2:", term2
         exponent = -(term1 + term2) / 2.0 / np.square(self.pos_deviation)
+        #     print "exp:",exponent
         # flatten as you pack pre-synaptic firing rates into the input array
-        self.inputs[:self.nb_pos_cells] = np.exp(exponent).flatten()
+        self.inputs[:self.nb_pos_cells] = np.exp(exponent)
         
         
         term1 = np.square(vel[0] - self.velocities_x) 
         term2 = np.square(vel[1] - self.velocities_y)
         exponent = -(term1 + term2) / 2.0 / np.square(self.vel_deviation)
         # flatten as you pack pre-synaptic firing rates into the input array
-        self.inputs[self.nb_pos_cells:] = np.exp(exponent).flatten()
-
-
+        self.inputs[self.nb_pos_cells:] = np.exp(exponent)
+        
+        
     def compute_network_output(self, pos, vel):
         # calculate and set the inputs given position and velocity
         self._set_network_input(pos, vel)
@@ -114,13 +127,6 @@ number of output neurons also
         self.Q_outputs= np.dot(self.weights, self.inputs)
         # Deniz: removed return statement for class attribute self.Q_outputs. 
        
-    '''     
-    # Deniz: Hey Ivan, what is this below?
-    def get_action_direction(self, a):
-
-        for i in xrange(len(self.etraces)):
-            self.etraces[i] = np.zeros(self.ntotal)
-    '''
 
     def get_action_direction(self, a):
 
@@ -147,22 +153,21 @@ number of output neurons also
 
         self.etrace *= (self.gamma * self.Lambda) 
 
-    def update_eligibility_trail(self, takenAction, delta, reward):
+    def update_eligibility_trail(self, takenAction):
         """updates the last taken eligibility trail"""
         self.etrace[takenAction] += self.inputs # TODO: which r_j? weighted??
 
     def update_weights(self, delta):
         """updates all weights"""
 
-        self.weights = self.weights + self.eta * delta * self.etrace # TODO check this works
+        self.weights += (self.eta * delta * self.etrace) # TODO check this works
             
 if __name__ == "__main__":
     new_network = NeuralNetwork(params.POS_NEURONS, params.POS_RANGE, params.VEL_NEURONS, 
                 params.VEL_RANGE, params.NB_OUTPUTS, params.ETA, params.GAMMA, params.LAMBDA)  
-    print "wts: ",new_network.weights
-    print "traces: ",new_network.el_traces
-    print "pos_y:",new_network.positions_y[1][0]-new_network.positions_y[0][0]    
-    print "vel_y:",new_network.velocities_y
+    pos = np.array([0.05,0.03])
+    vel =  np.array([0,0])
+    new_network._set_network_input(pos,vel)
     
         # array += scalar*scalar*array, arrays are 2D
     #self.weights += self.eta * delta * self.etrace

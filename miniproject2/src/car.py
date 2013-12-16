@@ -49,7 +49,8 @@ class car:
         """
 
         if self.time == 0:
-            # TODO: no learning in first iteration, no previous step (?)
+            # TODO: no learning in first iteration, no previous action
+            # take your first action!
             self.neuralNetwork.compute_network_output(position, velocity)
             self.action_index = self.policy()
             return self.action_index
@@ -63,14 +64,15 @@ class car:
             self.neuralNetwork.decay_eligibility_trails()
             self.neuralNetwork.update_eligibility_trail(self.action_index)
 
-        # this copies the list, not a pointer
+        # this copies the list by slicing, not a pointer
         Q_current = self.neuralNetwork.Q_outputs[:]
 
-        # update neural network to next state
+        # get new Q values after the transition Q(s',a')
         self.neuralNetwork.compute_network_output(position, velocity)
-        Q_next = self.neuralNetwork.Q_outputs
+        Q_next = self.neuralNetwork.Q_outputs[:]
+        
         if learn:    
-            delta = R + self.gamma*Q_next - Q_current
+            delta = R + params.GAMMA*Q_next - Q_current
 
 
             # updating weights
@@ -81,7 +83,7 @@ class car:
         # get action, based on policy
         self.action_index = self.policy()
 
-        #return self.neuralNetwork.getActionDirection( self.action_index )
+        # actuate the action a'
         return self.action_index
 
     def policy(self):
@@ -99,9 +101,9 @@ class car:
         """
 
         Q = self.neuralNetwork.Q_outputs
-        assert len(Q) == self.nb_actions
+        assert len(Q) == params.NB_OUTPUTS
 
-        if (np.random.random() < 1-self.epsilon):
+        if (np.random.random() < 1-params.EPSILON):
             return Q.argmax()
         else:
             # TODO: should we exclude argmax index?
