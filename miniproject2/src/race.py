@@ -3,7 +3,7 @@ from pylab import *
 import car
 import track
 
-ion() # Deniz: what's ion??
+ion()
 
 # This function trains a car in a track. 
 # Your car.py class should be able to be accessed in this way.

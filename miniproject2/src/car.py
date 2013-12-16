@@ -53,6 +53,7 @@ class car:
             # take your first action!
             self.neuralNetwork.compute_network_output(position, velocity)
             self.action_index = self.policy()
+            self.time += 1
             return self.action_index
             #return self.neuralNetwork.getActionDirection( self.action_index )
 
@@ -63,7 +64,7 @@ class car:
             # so before we change input to new position
             self.neuralNetwork.decay_eligibility_trails()
             self.neuralNetwork.update_eligibility_trail(self.action_index)
-
+            #print "I'm learning"
         # this copies the list by slicing, not a pointer
         Q_current = self.neuralNetwork.Q_outputs[:]
 
@@ -85,6 +86,22 @@ class car:
 
         # actuate the action a'
         return self.action_index
+
+    def get_action_direction(self, a):
+
+        """computes the direction for action a
+        @param a - integer, index to Q value list
+        """
+        # return constant velocity (0,0) if a = 0 
+        if a == 0:
+            return (0.0, 0.0)
+
+        n_dir = params.NB_OUTPUTS - 1.0
+
+        dir_x = np.cos(-2.0*np.pi*a/n_dir + np.pi/2.0)
+        dir_y = np.sin(-2.0*np.pi*a/n_dir + np.pi/2.0)
+
+        return (dir_x, dir_y)
 
     def policy(self):
         """this method returns the action index based on some policy

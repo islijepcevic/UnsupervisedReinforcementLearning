@@ -127,7 +127,8 @@ number of output neurons also
         self.Q_outputs= np.dot(self.weights, self.inputs)
         # Deniz: removed return statement for class attribute self.Q_outputs. 
        
-
+        ''' 
+    # put this in car.py
     def get_action_direction(self, a):
 
         """computes the direction for action a
@@ -137,30 +138,31 @@ number of output neurons also
         if a == 0:
             return (0.0, 0.0)
 
-        n_dir = self.nb_outputs - 1.0
+        n_dir = params.NB_OUTPUTS - 1.0
 
         dir_x = np.cos(-2.0*np.pi*a/n_dir + np.pi/2.0)
         dir_y = np.sin(-2.0*np.pi*a/n_dir + np.pi/2.0)
 
         return (dir_x, dir_y)
-
-    def decay_eligibility_trails(self, delta):
+        '''
+    def decay_eligibility_trails(self):
         """decays all eligibility trails"""
         # TODO: formula states that only the traces in state 'j' decay;
         #   but what is 'j'? Here, states are continuous. It seems natural
         #   to decay everything.
         #   Formulas taken from slide 39, week 18-24 November slides
-
-        self.etrace *= (self.gamma * self.Lambda) 
+        
+        self.el_traces *= (self.gamma * self.Lambda)
+         
 
     def update_eligibility_trail(self, takenAction):
         """updates the last taken eligibility trail"""
-        self.etrace[takenAction] += self.inputs # TODO: which r_j? weighted??
+        self.el_traces[takenAction] += self.inputs # TODO: which r_j? weighted??
 
     def update_weights(self, delta):
         """updates all weights"""
-
-        self.weights += (self.eta * delta * self.etrace) # TODO check this works
+        # print "delta:", delta
+        self.weights += self.eta * np.dot(delta,self.el_traces) # TODO check this works
             
 if __name__ == "__main__":
     new_network = NeuralNetwork(params.POS_NEURONS, params.POS_RANGE, params.VEL_NEURONS, 
@@ -170,5 +172,5 @@ if __name__ == "__main__":
     new_network._set_network_input(pos,vel)
     
         # array += scalar*scalar*array, arrays are 2D
-    #self.weights += self.eta * delta * self.etrace
+    #self.weights += self.eta * delta * self.el_traces
 
