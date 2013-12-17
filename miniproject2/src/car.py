@@ -57,7 +57,7 @@ class car:
             self.time += 1
             return self.action_index
             #return self.neuralNetwork.getActionDirection( self.action_index )
-
+        '''
         if learn:
             # updating eligibility trails
             # do it before everything else, since eligibility traces are
@@ -66,12 +66,13 @@ class car:
             #print "I'm learning"
             self.neuralNetwork.decay_eligibility_trails()
             self.neuralNetwork.update_eligibility_trail(self.action_index)
-
+        '''
         # this copies the list by slicing, not a pointer
         Q_current = self.neuralNetwork.Q_outputs[self.action_index]
 
         # get new Q values after the transition Q(s',a')
         self.neuralNetwork.compute_network_output(position, velocity)
+        # get action a', based on policy
         new_action = self.policy()
         Q_next = self.neuralNetwork.Q_outputs[new_action]
 
@@ -81,14 +82,15 @@ class car:
 #            else:
 #                R /= 2.0
             delta = R + params.GAMMA*Q_next - Q_current
-
+            self.neuralNetwork.decay_eligibility_trails()
+            self.neuralNetwork.update_eligibility_trail(self.action_index)
 
             # updating weights
             self.neuralNetwork.update_weights(delta, self.action_index)
 
         self.time += 1
 
-        # get action, based on policy
+        
         self.action_index = new_action
             
         # actuate the action a'
@@ -138,7 +140,7 @@ class car:
         computed Q values for given position/velocity
         """
 
-        Q = self.neuralNetwork.Q_outputs[:]
+        Q = self.neuralNetwork.Q_outputs
         assert len(Q) == params.NB_OUTPUTS
 
         if (np.random.random() < 1-params.EPSILON):

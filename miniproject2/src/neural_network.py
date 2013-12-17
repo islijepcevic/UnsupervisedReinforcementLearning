@@ -60,9 +60,9 @@ number of output neurons also
         self.Lambda = Lambda
         
     def reset(self):
-
+        '''
         self.time = 0
-        self.iter += 1
+        self.iter += 1'''
         self.el_traces = np.zeros((params.NB_OUTPUTS,self.nb_all_cells))
 
     def _set_network_input(self, pos, vel):
@@ -103,16 +103,16 @@ number of output neurons also
         """updates all weights"""
         # print "delta:", delta
         
-        self.time += 1
+    #    self.time += 1
         self.weights[action] += (self.eta * delta * self.el_traces[action])
-
-#        print "plotting weights"
-#        plotter.plotWeights(self.weights)
-#        for k in xrange(len(self.weights)):
-#            print k
-#            print self.weights[k]
-#        raw_input()
-            
+        '''
+        print "plotting weights"
+        plotter.plotWeights(self.weights)
+        for k in xrange(len(self.weights)):
+            print k
+            print self.weights[k]
+        raw_input()
+        '''    
 if __name__ == "__main__":
     new_network = NeuralNetwork(params.POS_NEURONS, params.POS_RANGE, params.VEL_NEURONS, 
                 params.VEL_RANGE, params.NB_OUTPUTS, params.ETA, params.GAMMA, params.LAMBDA)  
