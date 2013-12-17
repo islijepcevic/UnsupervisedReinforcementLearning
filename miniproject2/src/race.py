@@ -21,8 +21,8 @@ def train_car():
     monaco = track.track()
     ferrari = car.car()
         
-    n_trials = 1000
-    n_time_steps = 1000 # maximum time steps for each trial
+    n_trials = 1#000
+    n_time_steps = 20#000 # maximum time steps for each trial
     
     for j in arange(n_trials):	
 

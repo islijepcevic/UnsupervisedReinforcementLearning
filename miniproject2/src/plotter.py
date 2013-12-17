@@ -36,13 +36,17 @@ def plotInput(patch, iter, time):
     #plt.colorbar()
     #plt.savefig('plots/input_'+str(iter)+'_'+str(time)+'.png')
     plt.show()
-   
+
 def plotWeights(weights):
 
 #    plt.figure(2)
 #    plt.subplot(331)
-    plt.pcolor(weights[0][:(31*31)].reshape(31,31))
-
+    global counter
+    plt.figure(counter)
+    counter += 1
+    plt.pcolor(weights[:(31*31)].reshape(31,31))
+    #plt.pcolor(weights)#(weights[0][:(31*31)].reshape(31,31))
+    
 #    plt.subplot(332)
 #    plt.pcolor(weights[1][:(31*31)].reshape(31,31))
 #

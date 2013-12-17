@@ -82,6 +82,10 @@ class car:
 #            else:
 #                R /= 2.0
             delta = R + params.GAMMA*Q_next - Q_current
+            '''     
+            print "delta:",delta
+            print "Qcurrent:",Q_current
+            print "qnext:",Q_next'''
             self.neuralNetwork.decay_eligibility_trails()
             self.neuralNetwork.update_eligibility_trail(self.action_index)
 
