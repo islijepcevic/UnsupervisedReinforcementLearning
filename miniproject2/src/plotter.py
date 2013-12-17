@@ -36,7 +36,7 @@ def plotInput(patch, iter, time):
     #plt.colorbar()
     #plt.savefig('plots/input_'+str(iter)+'_'+str(time)+'.png')
     plt.show()
-   
+
 def plotWeights(weights):
 
     fig0 = plt.figure(90)
