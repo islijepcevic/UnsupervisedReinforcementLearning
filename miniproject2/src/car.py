@@ -21,8 +21,9 @@ class car:
         # Deniz: moved parameters to params.py
         
         self.time = 0
-        self.neuralNetwork = NeuralNetwork(params.POS_NEURONS, params.POS_RANGE, params.VEL_NEURONS, 
-                params.VEL_RANGE, params.NB_OUTPUTS, params.ETA, params.GAMMA, params.LAMBDA)
+        self.neuralNetwork = NeuralNetwork(params.POS_NEURONS, params.POS_RANGE, 
+                params.VEL_NEURONS, params.VEL_RANGE, params.NB_OUTPUTS, 
+                params.ETA, params.GAMMA, params.LAMBDA)
 
         # store last take action, in order to reinforce eligibility trace
         self.action_index = None
@@ -62,17 +63,18 @@ class car:
             # do it before everything else, since eligibility traces are
             # reinforced with the input of the taken action (== previous action)
             # so before we change input to new position
+            #print "I'm learning"
             self.neuralNetwork.decay_eligibility_trails()
             self.neuralNetwork.update_eligibility_trail(self.action_index)
-            #print "I'm learning"
+
         # this copies the list by slicing, not a pointer
-        Q_current = self.neuralNetwork.Q_outputs[:]
+        Q_current = self.neuralNetwork.Q_outputs[self.action_index]
 
         # get new Q values after the transition Q(s',a')
         self.neuralNetwork.compute_network_output(position, velocity)
-        Q_next = self.neuralNetwork.Q_outputs[:]
+        new_action = self.policy()
+        Q_next = self.neuralNetwork.Q_outputs[new_action]
 
-        
         if learn:    
 #            if R>0:
 #                R *= (1000 / self.time)
@@ -82,13 +84,13 @@ class car:
 
 
             # updating weights
-            self.neuralNetwork.update_weights(delta)
-            
+            self.neuralNetwork.update_weights(delta, self.action_index)
+
         self.time += 1
 
         # get action, based on policy
-        self.action_index = self.policy()
-
+        self.action_index = new_action
+            
         # actuate the action a'
         return self.action_index
 
@@ -142,8 +144,6 @@ class car:
         if (np.random.random() < 1-params.EPSILON):
             argmx = Q.argmax()
             if abs(Q[argmx] - 0.0) <= 1e-6:
-                print "Q for debugging:"
-                print Q
                 return np.random.randint(0, len(Q)-1) #this returns value!
             return Q.argmax() #this returns index
         else:
