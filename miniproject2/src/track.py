@@ -34,7 +34,7 @@ class track:
         self.last_pos = self.pos
         self.history = [self.pos]
         
-        self.t_penty = 0
+        self.t_penalty = 0
         self.total_reward = 0       # total reward
         self.time = 0               # time steps
         
@@ -53,7 +53,7 @@ class track:
         self.last_pos = self.pos
         self.history = [self.pos]
         
-        self.t_penty = 0
+        self.t_penalty = 0
         self.total_reward = 0
         self.time = 0
         self.finished = False
@@ -102,8 +102,8 @@ class track:
         
         if cross(pos-lastpos,wall[0]-lastpos)*cross(pos-lastpos,wall[1]-lastpos) < 0 and \
            cross(wall[1]-wall[0],pos-wall[0])*cross(wall[1]-wall[0],lastpos-wall[0]) < 0:
-           #print 'wall crash'
-           return True
+            #print 'wall crash'
+            return True
         return False
         
     def wall_crash(self,pos):
@@ -189,15 +189,17 @@ class track:
         # the action should be a integer between 0 and 8, indicating the direction of acceleration.
            
         # updates velocity
+        #  print "action",action
+        #  print "map val:", self.accel_map(action)
         self.vel = self.vel + self.accel_map(action)
         
         rew = 0
         self.message = 'Time: %d' % self.time
             
         # check if there is a time penalty
-        if self.t_penty>0:
+        if self.t_penalty>0:
             self.vel = array([0,0])
-            self.t_penty -= 1
+            self.t_penalty -= 1
     
         # impose the maximum velocities
         self.vel[self.vel>self.max_vel] = self.max_vel
@@ -209,7 +211,7 @@ class track:
         if self.crashed(new_pos):
             # if crashed a wall
             
-            self.t_penty = self.def_t_penty # give time penalty
+            self.t_penalty = self.def_t_penty # give time penalty
             rew = self.def_r_penty          # give reward penalty
             
             new_pos = self.pos              # return to previous position

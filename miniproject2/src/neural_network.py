@@ -37,12 +37,7 @@ number of output neurons also
         self.positions_y = py.flatten()
         self.velocities_x = vx.flatten()
         self.velocities_y = vy.flatten()
-        '''
-        print "pos x:", self.positions_x
-        print "pos y:", self.positions_y
-        print "vel x:", self.velocities_x
-        print "vel y:", self.velocities_y
-        '''      
+
         self.nb_pos_cells = pos_neurons*pos_neurons
         self.nb_vel_cells = vel_neurons*vel_neurons
         self.nb_all_cells = self.nb_pos_cells + self.nb_vel_cells
@@ -56,42 +51,6 @@ number of output neurons also
         self.el_traces = np.zeros((nb_outputs,self.nb_all_cells))
         self.Q_outputs = np.zeros(self.nb_outputs)
         
-        # Deniz:  not sure why you added the stuff below again -- it's the same as what's above this comment...? 
-        
-        '''
-        positions = np.linspace(pboundaries[0], pboundaries[1], pneurons)
-        velocities = np.linspace(vboundaries[0], vboundaries[1], vneurons)
-
-        (px, py) = np.meshgrid(positions, positions, sparse = False, 
-                                        indexing = 'xy')
-
-        (vx, vy) = np.meshgrid(velocities, velocities, sparse = False,
-                                        indexing = 'xy')
-
-        # Deniz: No flattening just yet -- otherwise we can't compute the activity of the place cells
-        # neuron centers
-        self.px = px.flatten() # FLATTEN POSITIONS AND VELS LIKE THIS
-        self.py = py.flatten()
-        self.vx = vx.flatten()
-        self.vy = vy.flatten()
-
-        # neuron center distances == standard deviations for computing input values
-        self.posDeviation = positions[1] - positions[0]
-        self.velDeviation = self.velocities[1] - self.velocities[0]
-
-        self.npos = pneurons*pneurons
-        self.nvel = vneurons*vneurons
-        self.ntotal = self.npos + self.nvel
-
-        self.inputs = np.zeros(self.ntotal)
-
-        self.noutputs = noutputs
-
-        # 2D arrays (same as matrices, but let's not complicate)
-        self.weights = np.zeros((noutputs, self.ntotal))
-        self.etraces = np.zeros((noutputs, self.ntotal))
-        self.Qoutputs = np.zeros(self.noutputs) # this one is 1D
-        '''
 
         self.eta = eta
         self.gamma = gamma
@@ -127,24 +86,7 @@ number of output neurons also
         self.Q_outputs= np.dot(self.weights, self.inputs)
         # Deniz: removed return statement for class attribute self.Q_outputs. 
        
-        ''' 
-    # put this in car.py
-    def get_action_direction(self, a):
 
-        """computes the direction for action a
-        @param a - integer, index to Q value list
-        """
-        # return constant velocity (0,0) if a = 0 
-        if a == 0:
-            return (0.0, 0.0)
-
-        n_dir = params.NB_OUTPUTS - 1.0
-
-        dir_x = np.cos(-2.0*np.pi*a/n_dir + np.pi/2.0)
-        dir_y = np.sin(-2.0*np.pi*a/n_dir + np.pi/2.0)
-
-        return (dir_x, dir_y)
-        '''
     def decay_eligibility_trails(self):
         """decays all eligibility trails"""
         # TODO: formula states that only the traces in state 'j' decay;
@@ -162,7 +104,8 @@ number of output neurons also
     def update_weights(self, delta):
         """updates all weights"""
         # print "delta:", delta
-        self.weights += self.eta * np.dot(delta,self.el_traces) # TODO check this works
+        
+        self.weights += self.eta * np.dot(delta,self.el_traces) 
             
 if __name__ == "__main__":
     new_network = NeuralNetwork(params.POS_NEURONS, params.POS_RANGE, params.VEL_NEURONS, 

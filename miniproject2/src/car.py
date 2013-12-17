@@ -117,12 +117,11 @@ class car:
         computed Q values for given position/velocity
         """
 
-        Q = self.neuralNetwork.Q_outputs
+        Q = self.neuralNetwork.Q_outputs[:]
         assert len(Q) == params.NB_OUTPUTS
 
         if (np.random.random() < 1-params.EPSILON):
-            return Q.argmax()
+            return Q.argmax() #this returns index
         else:
             # TODO: should we exclude argmax index?
-            # Deniz: nah, this is good :D
-            return Q[randint(0, len(Q)-1)]
+            return np.random.randint(0, len(Q)-1) #this returns value!
