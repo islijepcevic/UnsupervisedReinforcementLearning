@@ -39,35 +39,41 @@ def plotInput(patch, iter, time):
    
 def plotWeights(weights):
 
-#    plt.figure(2)
-#    plt.subplot(331)
+    fig0 = plt.figure(90)
     plt.pcolor(weights[0][:(31*31)].reshape(31,31))
+    fig0.savefig('plots/weihts0.png', bbox_inches=0)
 
-#    plt.subplot(332)
-#    plt.pcolor(weights[1][:(31*31)].reshape(31,31))
-#
-#    plt.subplot(333)
-#    plt.pcolor(weights[2][:(31*31)].reshape(31,31))
-#    
-#    plt.subplot(334)
-#    plt.pcolor(weights[3][:(31*31)].reshape(31,31))
-#
-#    plt.subplot(335)
-#    plt.pcolor(weights[4][:(31*31)].reshape(31,31))
-#
-#    plt.subplot(336)
-#    plt.pcolor(weights[5][:(31*31)].reshape(31,31))
-#
-#    plt.subplot(337)
-#    plt.pcolor(weights[6][:(31*31)].reshape(31,31))
-#
-#    plt.subplot(338)
-#    plt.pcolor(weights[7][:(31*31)].reshape(31,31))
-#
-#    plt.subplot(339)
-#    plt.pcolor(weights[8][:(31*31)].reshape(31,31))
-#
-    plt.show()
+    fig1 = plt.figure(91)
+    plt.pcolor(weights[1][:(31*31)].reshape(31,31))
+    fig1.savefig('plots/weihts1.png', bbox_inches=0)
+    
+    fig2 = plt.figure(92)
+    plt.pcolor(weights[2][:(31*31)].reshape(31,31))
+    fig2.savefig('plots/weihts2.png', bbox_inches=0)
+
+    fig3 = plt.figure(93)
+    plt.pcolor(weights[3][:(31*31)].reshape(31,31))
+    fig3.savefig('plots/weihts3.png', bbox_inches=0)
+
+    fig4 = plt.figure(94)
+    plt.pcolor(weights[4][:(31*31)].reshape(31,31))
+    fig4.savefig('plots/weihts4.png', bbox_inches=0)
+
+    fig5 = plt.figure(95)
+    plt.pcolor(weights[5][:(31*31)].reshape(31,31))
+    fig5.savefig('plots/weihts5.png', bbox_inches=0)
+
+    fig6 = plt.figure(96)
+    plt.pcolor(weights[6][:(31*31)].reshape(31,31))
+    fig6.savefig('plots/weihts6.png', bbox_inches=0)
+
+    fig7 = plt.figure(97)
+    plt.pcolor(weights[7][:(31*31)].reshape(31,31))
+    fig7.savefig('plots/weihts7.png', bbox_inches=0)
+
+    fig8 = plt.figure(98)
+    plt.pcolor(weights[8][:(31*31)].reshape(31,31))
+    fig8.savefig('plots/weihts8.png', bbox_inches=0)
 
 
 '''

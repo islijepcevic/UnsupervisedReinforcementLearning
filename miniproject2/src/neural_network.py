@@ -105,13 +105,6 @@ number of output neurons also
         
         self.time += 1
         self.weights[action] += (self.eta * delta * self.el_traces[action])
-
-#        print "plotting weights"
-#        plotter.plotWeights(self.weights)
-#        for k in xrange(len(self.weights)):
-#            print k
-#            print self.weights[k]
-#        raw_input()
             
 if __name__ == "__main__":
     new_network = NeuralNetwork(params.POS_NEURONS, params.POS_RANGE, params.VEL_NEURONS, 

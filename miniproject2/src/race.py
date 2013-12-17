@@ -3,6 +3,8 @@ from pylab import *
 import car
 import track
 
+from plotter import *
+
 ion()
 
 # This function trains a car in a track. 
@@ -23,6 +25,8 @@ def train_car():
         
     n_trials = 1000
     n_time_steps = 1000 # maximum time steps for each trial
+
+    learn_curve_file = open('learning_curve.data', 'a')
     
     for j in arange(n_trials):	
 
@@ -50,7 +54,11 @@ def train_car():
             if monaco.finished is True:
                 break
 
-#        raw_input()
+#        if j%100==0:
+#            plotWeights(ferrari.neuralNetwork.weights)
+#            raw_input()
+
+        print >> learn_curve_file, j, monaco.time, monaco.total_reward, monaco.finished
         
         if j%100 == 0:
             # plots the race result every 100 trials
@@ -58,6 +66,9 @@ def train_car():
             
         if j%10 == 0:
             print 'Trial:', j
+
+    learn_curve_file.close()
+    plotWeights(ferrari.neuralNetwork.weights)
 
     return ferrari #returns a trained car
     
@@ -90,6 +101,7 @@ def show_race(ferrari):
         # check if the race is over
         if monaco.finished is True:
             break
+
 
     print "finished"
     raw_input()
