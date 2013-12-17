@@ -22,7 +22,7 @@ def train_car():
     ferrari = car.car()
         
     n_trials = 1000
-    n_time_steps = 1000  # maximum time steps for each trial
+    n_time_steps = 1000 # maximum time steps for each trial
     
     for j in arange(n_trials):	
 
@@ -30,17 +30,17 @@ def train_car():
         # the track setup returns the initial position and velocity. 
         (position_0, velocity_0) = monaco.setup()	
         ferrari.reset()
-        
+        #print "pos0:", position_0, "vel0:", velocity_0
         # choose a first action
         action = ferrari.choose_action(position_0, velocity_0, 0)
-            
+
         # iterate over time
         for i in arange(n_time_steps) :	
             
             # the track receives which action was taken and 
             # returns the new position and velocity, and the reward value.
             (position, velocity, R) = monaco.move(action)	
-            
+            #print "pos:", position, "vel:", velocity, "R:", R
             # the car chooses a new action based on the new states and reward, and updates its parameters
             action = ferrari.choose_action(position, velocity, R)	
             
