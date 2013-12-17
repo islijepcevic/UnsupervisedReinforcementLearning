@@ -71,8 +71,13 @@ class car:
         # get new Q values after the transition Q(s',a')
         self.neuralNetwork.compute_network_output(position, velocity)
         Q_next = self.neuralNetwork.Q_outputs[:]
+
         
         if learn:    
+#            if R>0:
+#                R *= (1000 / self.time)
+#            else:
+#                R /= 2.0
             delta = R + params.GAMMA*Q_next - Q_current
 
 
@@ -110,6 +115,20 @@ class car:
         """
         return self.e_greedy_policy()
 
+    def decaying_e_greedy_policy(self):
+        """this method returns the action index based on epsilon-greedy policy
+        NOTE: it is assumed that the underlying neural network has already
+        computed Q values for given position/velocity
+        """
+
+        Q = self.neuralNetwork.Q_outputs
+        assert len(Q) == params.NB_OUTPUTS
+
+        if (np.random.random() < 1-params.EPSILON-1.0/(self.time+1)):
+            return Q.argmax() #this returns index
+        else:
+            return np.random.randint(0, len(Q)-1) #this returns value!
+
 
     def e_greedy_policy(self):
         """this method returns the action index based on epsilon-greedy policy
@@ -121,7 +140,11 @@ class car:
         assert len(Q) == params.NB_OUTPUTS
 
         if (np.random.random() < 1-params.EPSILON):
+            argmx = Q.argmax()
+            if abs(Q[argmx] - 0.0) <= 1e-6:
+                print "Q for debugging:"
+                print Q
+                return np.random.randint(0, len(Q)-1) #this returns value!
             return Q.argmax() #this returns index
         else:
-            # TODO: should we exclude argmax index?
             return np.random.randint(0, len(Q)-1) #this returns value!

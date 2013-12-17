@@ -34,21 +34,23 @@ def train_car():
         # choose a first action
         action = ferrari.choose_action(position_0, velocity_0, 0)
         
-        print type(action)
-            
         # iterate over time
         for i in arange(n_time_steps) :	
             
             # the track receives which action was taken and 
             # returns the new position and velocity, and the reward value.
             (position, velocity, R) = monaco.move(action)	
+
             #print "pos:", position, "vel:", velocity, "R:", R
             # the car chooses a new action based on the new states and reward, and updates its parameters
             action = ferrari.choose_action(position, velocity, R)	
+#            print i, position, velocity, R, action
             
             # check if the race is over
             if monaco.finished is True:
                 break
+
+#        raw_input()
         
         if j%100 == 0:
             # plots the race result every 100 trials
@@ -88,4 +90,7 @@ def show_race(ferrari):
         # check if the race is over
         if monaco.finished is True:
             break
+
+    print "finished"
+    raw_input()
 

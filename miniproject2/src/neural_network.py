@@ -25,12 +25,22 @@ number of output neurons also
         velocities = np.linspace(vel_boundaries[0], vel_boundaries[1], vel_neurons)
        
         
-        (px, py) = np.meshgrid(positions, positions, sparse = False, 
-                                        indexing = 'xy')
-        self.pos_deviation = px[0][1]-px[0][0]
-        (vx, vy) = np.meshgrid(velocities, velocities, sparse = False,
-                                        indexing = 'xy')
-        self.vel_deviation = vx[0][1] - vx[0][0]
+#        (px, py) = np.meshgrid(positions, positions)#, #sparse = False, 
+#                                        #indexing = 'xy')
+#        self.pos_deviation = px[0][1]-px[0][0]
+#        (vx, vy) = np.meshgrid(velocities, velocities)#,# sparse = False,
+#                                        #indexing = 'xy')
+#        self.vel_deviation = vx[0][1] - vx[0][0]
+        (py, px) = np.meshgrid(positions, positions)#, #sparse = False, 
+                                        #indexing = 'xy')
+        self.pos_deviation = px[1][0]-px[0][0]
+        (vy, vx) = np.meshgrid(velocities, velocities)#,# sparse = False,
+                                        #indexing = 'xy')
+        self.vel_deviation = vx[1][0] - vx[0][0]
+        print vx
+        print 
+        print vy
+        print
         # Deniz: No flattening just yet -- otherwise we can't compute the activity of the place cells
         # neuron centers
         self.positions_x = px.flatten() # FLATTEN POSITIONS AND VELS LIKE THIS
@@ -47,6 +57,7 @@ number of output neurons also
         self.nb_outputs = nb_outputs
 
         # for each output neuron, we have weights and traces
+        #self.weights = np.random.normal(0.0, 0.00001, (nb_outputs,self.nb_all_cells))
         self.weights = np.zeros((nb_outputs,self.nb_all_cells))
         self.el_traces = np.zeros((nb_outputs,self.nb_all_cells))
         self.Q_outputs = np.zeros(self.nb_outputs)
@@ -105,7 +116,7 @@ number of output neurons also
         """updates all weights"""
         # print "delta:", delta
         
-        self.weights += self.eta * np.dot(delta,self.el_traces) 
+        self.weights += (self.eta * np.dot(delta,self.el_traces) )
             
 if __name__ == "__main__":
     new_network = NeuralNetwork(params.POS_NEURONS, params.POS_RANGE, params.VEL_NEURONS, 
