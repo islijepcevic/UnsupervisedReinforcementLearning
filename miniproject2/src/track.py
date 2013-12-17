@@ -171,7 +171,7 @@ class track:
              [self.finish_line[0,1], self.finish_line[1,1]], color='black', ls='--', lw=5)
         
         figsize = 0.15
-        imshow(self.car_img[:,::-1],extent=(self.pos[0]-figsize/2,self.pos[0]+figsize/2,self.pos[1]-figsize/2,self.pos[1]+figsize/2))
+        imshow(self.car_img[:,::-1],origin='lower',extent=(self.pos[0]-figsize/2,self.pos[0]+figsize/2,self.pos[1]-figsize/2,self.pos[1]+figsize/2))
         
         title(self.message)
         
@@ -180,9 +180,9 @@ class track:
     def update_world(self):
         self.time = self.time + 1
         
-        if self.plotting:
+        if self.plotting and (self.time+1)%20 == 0:
             self.plot_world()
-            time.sleep(0.03)         # slows down the simulation for watching the race
+            time.sleep(0.005)         # slows down the simulation for watching the race
     
     def move(self,action): 
         # this is the main method, called when an action is taken.

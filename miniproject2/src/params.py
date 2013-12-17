@@ -1,4 +1,3 @@
-       
 ETA = 0.005
 GAMMA = 0.95
 LAMBDA = 0.95

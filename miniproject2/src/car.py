@@ -21,8 +21,9 @@ class car:
         # Deniz: moved parameters to params.py
         
         self.time = 0
-        self.neuralNetwork = NeuralNetwork(params.POS_NEURONS, params.POS_RANGE, params.VEL_NEURONS, 
-                params.VEL_RANGE, params.NB_OUTPUTS, params.ETA, params.GAMMA, params.LAMBDA)
+        self.neuralNetwork = NeuralNetwork(params.POS_NEURONS, params.POS_RANGE, 
+                params.VEL_NEURONS, params.VEL_RANGE, params.NB_OUTPUTS, 
+                params.ETA, params.GAMMA, params.LAMBDA)
 
         # store last take action, in order to reinforce eligibility trace
         self.action_index = None
@@ -49,8 +50,6 @@ class car:
         """
 
         if self.time == 0:
-            # TODO: no learning in first iteration, no previous action
-            # take your first action!
             self.neuralNetwork.compute_network_output(position, velocity)
             self.action_index = self.policy()
             self.time += 1
@@ -62,33 +61,48 @@ class car:
             # do it before everything else, since eligibility traces are
             # reinforced with the input of the taken action (== previous action)
             # so before we change input to new position
+            #print "I'm learning"
             self.neuralNetwork.decay_eligibility_trails()
             self.neuralNetwork.update_eligibility_trail(self.action_index)
-            #print "I'm learning"
+#            pass
+
         # this copies the list by slicing, not a pointer
-        Q_current = self.neuralNetwork.Q_outputs[:]
+        Q_current = self.neuralNetwork.Q_outputs[self.action_index]
 
         # get new Q values after the transition Q(s',a')
         self.neuralNetwork.compute_network_output(position, velocity)
-        Q_next = self.neuralNetwork.Q_outputs[:]
-        
+        # get action a', based on policy
+        new_action = self.policy()
+        Q_next = self.neuralNetwork.Q_outputs[new_action]
+
         if learn:    
+#            if R>0:
+#                R *= (1000 / self.time)
+#            else:
+#                R /= 2.0
             delta = R + params.GAMMA*Q_next - Q_current
 
+# ivan: wrong place for updating etraces
+#            self.neuralNetwork.decay_eligibility_trails()
+#            self.neuralNetwork.update_eligibility_trail(self.action_index)
 
             # updating weights
-            self.neuralNetwork.update_weights(delta)
-            
+            self.neuralNetwork.update_weights(delta, self.action_index)
+
+# ivan: same as putting it up before everything
+#            self.neuralNetwork.decay_eligibility_trails()
+#            self.neuralNetwork.update_eligibility_trail(new_action)
+
+
         self.time += 1
 
-        # get action, based on policy
-        self.action_index = self.policy()
+        
+        self.action_index = new_action
 
         # actuate the action a'
         return self.action_index
 
     def get_action_direction(self, a):
-
         """computes the direction for action a
         @param a - integer, index to Q value list
         """
@@ -110,6 +124,20 @@ class car:
         """
         return self.e_greedy_policy()
 
+    def decaying_e_greedy_policy(self):
+        """this method returns the action index based on epsilon-greedy policy
+        NOTE: it is assumed that the underlying neural network has already
+        computed Q values for given position/velocity
+        """
+
+        Q = self.neuralNetwork.Q_outputs
+        assert len(Q) == params.NB_OUTPUTS
+
+        if (np.random.random() < 1-params.EPSILON-1.0/(self.time+1)):
+            return Q.argmax() #this returns index
+        else:
+            return np.random.randint(0, len(Q)-1) #this returns value!
+
 
     def e_greedy_policy(self):
         """this method returns the action index based on epsilon-greedy policy
@@ -117,11 +145,13 @@ class car:
         computed Q values for given position/velocity
         """
 
-        Q = self.neuralNetwork.Q_outputs[:]
+        Q = self.neuralNetwork.Q_outputs
         assert len(Q) == params.NB_OUTPUTS
 
         if (np.random.random() < 1-params.EPSILON):
+            argmx = Q.argmax()
+            if abs(Q[argmx] - 0.0) <= 1e-6:
+                return np.random.randint(0, len(Q)-1) #this returns value!
             return Q.argmax() #this returns index
         else:
-            # TODO: should we exclude argmax index?
-            return np.random.randint(0, len(Q)-1) #this returns value!
+            return np.random.randint(0, len(Q)) #this returns value!
