@@ -94,6 +94,7 @@ def plot_learning_curve(data, description):
     plt.xlabel(description.get('xlabel'))
     plt.ylabel(description.get('ylabel'))
     plt.title(description.get('title'))
+    plt.legend(loc = description.get('loc'))
     plt.savefig('plots/' + description['fname'], bbox_inches=0)
     plt.close()
 
@@ -115,6 +116,7 @@ def main(argv):
             'fname': 'learning_curve.png',
             'label': 'avg learning curve',
             'title': 'Learning curve',
+            'loc': 'upper right',
             'xlabel': 'trial',
             'ylabel': 'time steps to finish'
         }
@@ -123,6 +125,7 @@ def main(argv):
             'fname': 'reward_curve.png',
             'label': 'avg reward curve',
             'title': 'Reward curve',
+            'loc': 'lower right',
             'xlabel': 'trials',
             'ylabel': 'reward'
         }
