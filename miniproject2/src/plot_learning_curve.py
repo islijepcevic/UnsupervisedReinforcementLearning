@@ -12,6 +12,34 @@ def simulate():
         print "====="
         race.train_car(save_learning_curve = True)
 
+
+def process_single_curves():
+    """helping function to provide data only for single learning curves"""
+
+    data = []
+
+    last_trial = 2000
+
+    with open('learning_curve.data', 'r') as f_in:
+        for line in f_in:
+            if not line: # empty line
+                continue
+
+            # (trial, time, reward, bool_finished)
+            content = line.split()
+
+            trial = int(content[0])
+            time = int(content[1])
+
+            if trial < last_trial:
+                data.append(np.zeros((1000, 2)))
+
+            data[-1][trial, :] = [trial, time]
+
+            last_trial = trial
+
+    return data
+
 def process():
     '''processes the data from the file `learning_curve.data`
     @returns array of entries like (trial, avg_time, avg_reward, n_finished)
@@ -57,14 +85,24 @@ def process():
 
     return data
 
-def plot_learning_curve(data):
-    """data = [(trial, avg_time, avg_reward, n_finished)]"""
+def plot_learning_curve(data, fname = 'learning_curve.png',
+        curve_label = "avg learning curve", curve_title = "Learning curve"):
+    """data = [(trial, value)]"""
 
     plt.plot(data[:, 0], data[:, 1], label= curve_label)
     plt.xlabel('trial')
     plt.ylabel('time steps to finish')
-    plt.title('Learning curve')
-    plt.savefig('plots/learning_curve.png', bbox_inches=0)
+    plt.title(curve_title)
+    plt.savefig('plots/' + fname, bbox_inches=0)
+    plt.close()
+
+def plot_single_curves(data):
+
+    for k in xrange(len(data)):
+        fname = 'curve_car_' + str(k) + '.png'
+        label = 'a learning curve'
+        plot_learning_curve(data[k], fname, label)
+
 
 def main(argv):
     if len(argv) == 2 and argv[1] == "-s":
@@ -73,6 +111,12 @@ def main(argv):
     data = process()
 
     plot_learning_curve(data)
+
+    # plots curves for every single car
+    # this is not needed, but is here just to compare the difference between an
+    # averaged curve and single car run instance
+    #single_data = process_single_curves()
+    #plot_single_curves(single_data)
 
 
 usage = '''Usage:
