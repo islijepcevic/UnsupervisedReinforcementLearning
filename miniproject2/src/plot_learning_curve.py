@@ -60,7 +60,7 @@ def process():
 def plot_learning_curve(data):
     """data = [(trial, avg_time, avg_reward, n_finished)]"""
 
-    plt.plot(data[:][0], data[:][1], label="avg time to finish")
+    plt.plot(data[:, 0], data[:, 1], label= curve_label)
     plt.xlabel('trial')
     plt.ylabel('time steps to finish')
     plt.title('Learning curve')
