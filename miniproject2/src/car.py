@@ -1,7 +1,5 @@
-from pylab import *
 from neural_network import NeuralNetwork
 import numpy as np
-from random import random
 import params
 # this is a dummy class, use it as template inserting your algorithm.
 

@@ -1,5 +1,5 @@
 import numpy as np
-import plotter
+#import plotter
 import params
 
 class NeuralNetwork:

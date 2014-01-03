@@ -27,3 +27,13 @@ saves the learnt agent to a file if file name given.
 
 `plotter.py` contains some plotting code (mainly for debugging).
 
+
+OTHER FILES
+-----------
+
+`learning_curve.data` is not part of the repository. It is generated while
+running `plot_learning_curve.py` with a `-s` parameter for simulation, and it
+contains data for 10 simulated cars. It is used to plot learning and reward
+curves.
+
+`plots` directory contains various plots.
