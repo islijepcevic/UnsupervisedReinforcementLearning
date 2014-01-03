@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 from track import track
 import pickle
 import sys
