@@ -85,15 +85,16 @@ def process():
 
     return data
 
-def plot_learning_curve(data, fname = 'learning_curve.png',
-        curve_label = "avg learning curve", curve_title = "Learning curve"):
-    """data = [(trial, value)]"""
+def plot_learning_curve(data, description):
+    
+    if not 'fname' in description:
+        description['fname'] = 'curve.png'
 
-    plt.plot(data[:, 0], data[:, 1], label= curve_label)
-    plt.xlabel('trial')
-    plt.ylabel('time steps to finish')
-    plt.title(curve_title)
-    plt.savefig('plots/' + fname, bbox_inches=0)
+    plt.plot(data[:, 0], data[:, 1], label= description.get('label'))
+    plt.xlabel(description.get('xlabel'))
+    plt.ylabel(description.get('ylabel'))
+    plt.title(description.get('title'))
+    plt.savefig('plots/' + description['fname'], bbox_inches=0)
     plt.close()
 
 def plot_single_curves(data):
@@ -110,7 +111,22 @@ def main(argv):
 
     data = process()
 
-    plot_learning_curve(data)
+    plot_learning_curve(data, {
+            'fname': 'learning_curve.png',
+            'label': 'avg learning curve',
+            'title': 'Learning curve',
+            'xlabel': 'trial',
+            'ylabel': 'time steps to finish'
+        }
+    )
+    plot_learning_curve(data[:, (0,2)], {
+            'fname': 'reward_curve.png',
+            'label': 'avg reward curve',
+            'title': 'Reward curve',
+            'xlabel': 'trials',
+            'ylabel': 'reward'
+        }
+    )
 
     # plots curves for every single car
     # this is not needed, but is here just to compare the difference between an
