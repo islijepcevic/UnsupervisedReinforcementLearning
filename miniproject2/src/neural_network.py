@@ -104,7 +104,7 @@ number of output neurons also
         # print "delta:", delta
         
     #    self.time += 1
-        self.weights[action] += (self.eta * delta * self.el_traces[action])
+        self.weights += (self.eta * delta * self.el_traces)
         '''
         plotter.plotWeights(self.weights[action])
         
