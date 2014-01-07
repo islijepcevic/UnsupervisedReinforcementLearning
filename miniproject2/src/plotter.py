@@ -38,6 +38,10 @@ def plotInput(patch, iter, time):
     plt.show()
 
 def plotWeights(weights):
+    '''this function plots all the position weights of the neural network, and
+    serves as debugging code. Put it where you need it in order to see the
+    weights
+    '''
 
     fig0 = plt.figure(90)
     plt.pcolor(weights[0][:(31*31)].reshape(31,31))

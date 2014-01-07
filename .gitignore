@@ -2,3 +2,10 @@
 *~
 *.pdf
 *.swp
+miniproject1/ex2/objective*
+miniproject1/ex2/response*
+miniproject1/ex2/theta*
+miniproject1/ex2/weights*
+miniproject1/ex2/bcm_tmp.py
+miniproject1/ex3/simulation
+miniproject2/src/*.data

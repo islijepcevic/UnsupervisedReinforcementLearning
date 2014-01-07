@@ -15,7 +15,7 @@ ion()
 # final_car = race.train_car()
 # race.show_race(final_car)
 
-def train_car():
+def train_car(save_learning_curve = False):
     
     close('all')
     
@@ -26,7 +26,8 @@ def train_car():
     n_trials = 1000
     n_time_steps = 1000 # maximum time steps for each trial
 
-    learn_curve_file = open('learning_curve.data', 'a')
+    if save_learning_curve:
+        learn_curve_file = open('learning_curve.data', 'a')
     
     for j in arange(n_trials):	
 
@@ -34,10 +35,10 @@ def train_car():
         # the track setup returns the initial position and velocity. 
         (position_0, velocity_0) = monaco.setup()	
         ferrari.reset()
-        #print "pos0:", position_0, "vel0:", velocity_0
+
         # choose a first action
         action = ferrari.choose_action(position_0, velocity_0, 0)
-        
+
         # iterate over time
         for i in arange(n_time_steps) :	
             
@@ -45,30 +46,28 @@ def train_car():
             # returns the new position and velocity, and the reward value.
             (position, velocity, R) = monaco.move(action)	
 
-            #print "pos:", position, "vel:", velocity, "R:", R
-            # the car chooses a new action based on the new states and reward, and updates its parameters
+            # the car chooses a new action based on the new states and reward,
+            # and updates its parameters
             action = ferrari.choose_action(position, velocity, R)	
-#            print i, position, velocity, R, action
             
             # check if the race is over
             if monaco.finished is True:
                 break
 
-#        if j%100==0:
-#            plotWeights(ferrari.neuralNetwork.weights)
-#            raw_input()
-
-        print >> learn_curve_file, j, monaco.time, monaco.total_reward, monaco.finished
+        if save_learning_curve:
+            print >> learn_curve_file, \
+                    j, monaco.time, monaco.total_reward, monaco.finished
         
-        if j%100 == 0:
+        if j%100 == 0 and not save_learning_curve:
             # plots the race result every 100 trials
             monaco.plot_world()
             
         if j%10 == 0:
-            print 'Trial:', j
+            print
+            print 'TRIAL:', j
 
-    learn_curve_file.close()
-    plotWeights(ferrari.neuralNetwork.weights)
+    if save_learning_curve:
+        learn_curve_file.close()
 
     return ferrari #returns a trained car
     
