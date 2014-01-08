@@ -76,6 +76,9 @@ def train_car(save_learning_curve = False):
             print
             print 'TRIAL:', j
 
+        if (j+1)%100 == 0:
+            plot_navigation_map(ferrari, j+1)
+
     if save_learning_curve:
         learn_curve_file.close()
 
