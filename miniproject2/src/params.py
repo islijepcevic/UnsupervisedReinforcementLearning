@@ -8,4 +8,8 @@ VEL_NEURONS = 11
 
 POS_RANGE = [0.0, 1.0]
 VEL_RANGE = [-1.0, 1.0]
+STATIC_VEL_RANGE = [0.0, 0.0]
 NB_OUTPUTS = 9
+FILENAME = 'learning_curve.data'
+COUNTER = 0
+

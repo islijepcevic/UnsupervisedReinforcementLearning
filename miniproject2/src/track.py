@@ -224,7 +224,7 @@ class track:
             # if the goal was reached.
 
             # calculate the reward given
-            rew = self.max_rew 
+            rew = self.max_rew #  TODO: TRY self.time # 
 
             print 'Finish line! Time steps:', self.time
             print 'Total reward:', self.total_reward

@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sys
 import race
+import params
 
 def simulate():
     for i in xrange(10):
@@ -20,7 +21,7 @@ def process_single_curves():
 
     last_trial = 2000
 
-    with open('learning_curve.data', 'r') as f_in:
+    with open(params.FILENAME, 'r') as f_in:
         for line in f_in:
             if not line: # empty line
                 continue
@@ -47,7 +48,7 @@ def process():
     #[(trial, time_avg, reward_avg, ncars_finished)]
     data = np.zeros((1000, 4))
 
-    with open('learning_curve.data', 'r') as f_in:
+    with open(params.FILENAME, 'r') as f_in:
         for line in f_in:
             if not line: # empty line
                 continue
