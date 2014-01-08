@@ -171,7 +171,7 @@ class track:
              [self.finish_line[0,1], self.finish_line[1,1]], color='black', ls='--', lw=5)
         
         figsize = 0.15
-        imshow(self.car_img[:,::-1],origin='lower',extent=(self.pos[0]-figsize/2,self.pos[0]+figsize/2,self.pos[1]-figsize/2,self.pos[1]+figsize/2))
+        imshow(self.car_img[:,::-1],extent=(self.pos[0]-figsize/2,self.pos[0]+figsize/2,self.pos[1]-figsize/2,self.pos[1]+figsize/2))
         
         title(self.message)
         
@@ -225,7 +225,7 @@ class track:
             # if the goal was reached.
 
             # calculate the reward given
-            rew = self.max_rew 
+            rew = self.max_rew #  TODO: TRY self.time # 
 
             print 'Finish line! Time steps:', self.time
             print 'Total reward:', self.total_reward

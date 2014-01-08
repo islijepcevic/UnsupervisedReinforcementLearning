@@ -97,14 +97,14 @@ number of output neurons also
 
     def update_eligibility_trail(self, takenAction):
         """updates the last taken eligibility trail"""
-        self.el_traces[takenAction] += self.inputs # TODO: which r_j? weighted??
+        self.el_traces[takenAction] += self.inputs # For all traces
 
     def update_weights(self, delta, action):
         """updates all weights"""
         # print "delta:", delta
         
     #    self.time += 1
-        self.weights[action] += (self.eta * delta * self.el_traces[action])
+        self.weights += (self.eta * delta * self.el_traces)
         '''
         plotter.plotWeights(self.weights[action])
         
