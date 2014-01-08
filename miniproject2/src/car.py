@@ -120,7 +120,8 @@ class car:
         NOTE: it is assumed that the underlying neural network has already
         computed Q values for given position/velocity
         """
-        return self.decaying_e_greedy_policy()
+        #return self.decaying_e_greedy_policy()
+        return self.e_greedy_policy()
 
     def decaying_e_greedy_policy(self):
         """this method returns the action index based on epsilon-greedy policy

@@ -2,12 +2,9 @@ from pylab import *
 import params
 import car
 import track
-<<<<<<< HEAD
 import params
 
-=======
 import numpy as np
->>>>>>> 1efeb144ae9e4e723b8d29c937d6acba26ca7b57
 from plotter import *
 import neural_network as nn
 ion()
@@ -32,17 +29,13 @@ def train_car(save_learning_curve = False):
     n_time_steps = 1000 # maximum time steps for each trial
 
     if save_learning_curve:
-<<<<<<< HEAD
         learn_curve_file = open(params.LEARNING_CURVE_FILE, 'a')
     
-=======
-        learn_curve_file = open(params.FILENAME, 'a')
     '''    
     net = nn.NeuralNetwork(params.POS_NEURONS, params.POS_RANGE, 
                 params.VEL_NEURONS, params.STATIC_VEL_RANGE, params.NB_OUTPUTS, 
                 params.ETA, params.GAMMA, params.LAMBDA)
     '''
->>>>>>> 1efeb144ae9e4e723b8d29c937d6acba26ca7b57
     for j in arange(n_trials):	
 
         # before every trial, reset the track and the car.

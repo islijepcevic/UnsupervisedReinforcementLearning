@@ -21,11 +21,7 @@ def process_single_curves():
 
     last_trial = 2000
 
-<<<<<<< HEAD
     with open(params.LEARNING_CURVE_FILE, 'r') as f_in:
-=======
-    with open(params.FILENAME, 'r') as f_in:
->>>>>>> 1efeb144ae9e4e723b8d29c937d6acba26ca7b57
         for line in f_in:
             if not line: # empty line
                 continue
@@ -53,11 +49,7 @@ def process():
     #[(trial, time_avg, reward_avg, ncars_finished)]
     data = np.zeros((1000, 4))
 
-<<<<<<< HEAD
     with open(params.LEARNING_CURVE_FILE, 'r') as f_in:
-=======
-    with open(params.FILENAME, 'r') as f_in:
->>>>>>> 1efeb144ae9e4e723b8d29c937d6acba26ca7b57
         for line in f_in:
             if not line: # empty line
                 continue
