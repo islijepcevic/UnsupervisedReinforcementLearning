@@ -176,6 +176,7 @@ class track:
         title(self.message)
         
         draw()
+        # savefig here for saving navigation map
         
     def update_world(self):
         self.time = self.time + 1

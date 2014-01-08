@@ -2,6 +2,7 @@ from pylab import *
 
 import car
 import track
+import params
 
 from plotter import *
 
@@ -27,7 +28,7 @@ def train_car(save_learning_curve = False):
     n_time_steps = 1000 # maximum time steps for each trial
 
     if save_learning_curve:
-        learn_curve_file = open('learning_curve.data', 'a')
+        learn_curve_file = open(params.LEARNING_CURVE_FILE, 'a')
     
     for j in arange(n_trials):	
 
@@ -53,6 +54,9 @@ def train_car(save_learning_curve = False):
             # check if the race is over
             if monaco.finished is True:
                 break
+        else:
+            print "Did not finish the track"
+            print "Total reward:", monaco.total_reward
 
         if save_learning_curve:
             print >> learn_curve_file, \

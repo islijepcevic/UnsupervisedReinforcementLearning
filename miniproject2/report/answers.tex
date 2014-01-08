@@ -11,8 +11,8 @@ do we need this?
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.8\textwidth]{figures/learning_curve.png}
-\label{fig:lcurve}
-\caption{Learning curve, averaged over $10$ independent learning agents}
+\caption{\label{fig:lcurve}Learning curve, averaged over $10$ independent
+learning agents}
 \end{figure}
 
 The learning curve of implemented algorithm can be seen in the
@@ -27,21 +27,107 @@ the track. The meaning of that is that the agent has learnt enough information
 about the environment and starts to exploit it extensively. The exploration that
 happens is not enough to find the better solutions.
 
-\paragraph{Integrated reward}
-
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.8\textwidth]{figures/reward_curve.png}
-\label{fig:rcurve}
-\caption{Reward curve, averaged over 10 independent learning cars}
+\caption{\label{fig:rcurve}Reward curve, averaged over 10 independent learning
+cars}
 \end{figure}
-
+ 
+\paragraph{Integrated reward}
 The reward curve is plotted in the Figure~\ref{fig:rcurve}. It highly resembles
 the learning curve, despite being negative and scaled. The consistency between
 the two curves confirms the correlation between the obtained reward and the
 learning.
 
 \paragraph{Exploration-exploitation}
+Exploration-exploitation tradeoff is controlled with $\epsilon$ parameter when
+the $\epsilon$-greedy strategy is used. Learning curves for different $\epsilon$
+values can be seen in Figure~\ref{fig:eps}. When $\epsilon$ is too small
+($\epsilon \sim 0$) algorithm exploits the acquired knowledge at every step. It
+often happens that the agent does not explore the majority of solutions and it
+is clearly visible from the learning curve in Figure~\ref{fig:eps0} that it did
+not gain almost any knowledge about the track. The latency does not decrease and
+the variance is huge during the whole learning. On the other hand, setting
+$\epsilon$ to high values ($\epsilon \ge 0.5$) employs too much exploration such
+that the agent rarely has the chance to apply what it's learnt and wanders
+around the map too much, which is also visible from the learning curve
+(Figure~\ref{fig:eps5} and Figure~\ref{fig:eps10}). The best observed values for
+$\epsilon$ are when it is slightly lower than $0.1$, for example $\epsilon =
+0.05$ shown in Figure~\ref{fig:eps05}.  One additional insight to the influence
+of $\epsilon$ parameter can be observed in Table~\ref{tab:perf}. Same
+conclusions could be drawn from that table, the best values again being for
+$\epsilon \in [0.05, 0.1]$.
+
+In addition, we tried to improve the performance of our agent by decreasing
+$\epsilon$ linearly during the learning session, with different starting and
+ending values. For some reason, this yields two different behaviors at different
+runs. At some times it gives a very good performance, slightly better than
+already observed. However, at some other runs it can't seem to learn the good
+trajectory and most often (during the learning session) does not even finish the
+track. Average performance is always around $135$ and the number of agents
+finishing the race is around $90\%$.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+$\epsilon$ & performance & finished \\
+\hline
+$0.0$ & $549.05$ & $44\%$\\
+\hline
+$0.05$ & $76.78$ & $100\%$ \\
+\hline
+$0.1$ & $88.12$ & $100\%$ \\
+\hline
+$0.2$ & $139.72$ & $94\%$ \\
+\hline
+$0.5$ & $223.71$ & $91\%$ \\
+\hline
+$1.0$ & $609.82$ & $35\%$ \\
+\hline
+\end{tabular}
+\caption{\label{tab:perf}Table showing performance quantification for varying
+$\epsilon$. For each value of $\epsilon$ we trained $10$ agents. Performance is
+measured as average latency for an agent in the last $10$ trials of any learning
+session, provided that agent finished the race. The percentage in the third
+column shows how many of the observed agents managed to finish the race (and
+hence are counted in the average).}
+\end{table}
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{figures/epsilon_0_learning_curve.png}
+    \caption{\label{fig:eps0}$\epsilon = 0$}
+\end{subfigure}
+~
+\begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{figures/epsilon_05_learning_curve.png}
+    \caption{\label{fig:eps05}$\epsilon = 0.05$}
+\end{subfigure}
+\begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{figures/epsilon_1_learning_curve.png}
+    \caption{$\epsilon = 0.1$}
+\end{subfigure}
+~
+\begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{figures/epsilon_2_learning_curve.png}
+    \caption{$\epsilon = 0.2$}
+\end{subfigure}
+\begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{figures/epsilon_5_learning_curve.png}
+    \caption{\label{fig:eps5}$\epsilon = 0.5$}
+\end{subfigure}
+~
+\begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{figures/epsilon_10_learning_curve.png}
+    \caption{\label{fig:eps10}$\epsilon = 1.0$}
+\end{subfigure}
+\caption{\label{fig:eps}Learning curves for different values of $\epsilon$
+parameter. This shows the effect of exploration-exploitation tradeoff}
+\end{figure}
+ 
 
 \paragraph{Navigation map}
 
