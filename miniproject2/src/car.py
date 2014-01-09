@@ -74,10 +74,10 @@ class car:
         Q_next = self.neuralNetwork.Q_outputs[new_action]
 
         if learn:    
-#            if R>0:
-#                R *= (1000 / self.time)
-#            else:
-#                R /= 2.0
+            if R>0:
+                R *= (200 / self.time)
+            else:
+                R /= 2.0
             delta = R + params.GAMMA*Q_next - Q_current
 
 # ivan: wrong place for updating etraces
