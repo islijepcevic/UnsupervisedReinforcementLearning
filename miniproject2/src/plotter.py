@@ -51,7 +51,7 @@ def plot_navigation_map(car, t):
 
     X,Y,U,V = zip(*arrows)
 
-    plt.figure(t)
+    plt.figure(t+1)
     ax = plt.gca()
     ax.quiver(X,Y,U,V, angles='xy', scale_units='xy', scale=1)
     ax.set_xlim([-0.1, 1.1])
