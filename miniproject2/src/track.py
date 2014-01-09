@@ -173,7 +173,7 @@ class track:
         
         figsize = 0.15
         imshow(self.car_img[:,::-1],extent=(self.pos[0]-figsize/2,self.pos[0]+figsize/2,self.pos[1]-figsize/2,self.pos[1]+figsize/2))
-        handle.savefig("trajectory_%d.png"%params.COUNTER)
+        handle.savefig("smart_trajectory_%d.png"%params.COUNTER)
         params.COUNTER +=1
         title(self.message)
         

@@ -56,9 +56,9 @@ def plot_navigation_map(car, t):
     ax.quiver(X,Y,U,V, angles='xy', scale_units='xy', scale=1)
     ax.set_xlim([-0.1, 1.1])
     ax.set_ylim([-0.1, 1.1])
-    plt.title('Navigation map after %d trials'%t)
+    plt.title('Navigation map after %d trials, with "smart" reward'%t)
     #plt.draw()
-    plt.savefig("plots/nmap_%d.png"%t, bbox_inches=0)
+    plt.savefig("plots/smart_nmap_%d.png"%t, bbox_inches=0)
             
 
 
@@ -78,39 +78,39 @@ def plotWeights(weights):
 
     fig0 = plt.figure(90)
     plt.pcolor(weights[0][:(31*31)].reshape(31,31))
-    fig0.savefig('plots/weihts0.png', bbox_inches=0)
+    fig0.savefig('plots/weights0.png', bbox_inches=0)
 
     fig1 = plt.figure(91)
     plt.pcolor(weights[1][:(31*31)].reshape(31,31))
-    fig1.savefig('plots/weihts1.png', bbox_inches=0)
+    fig1.savefig('plots/weights1.png', bbox_inches=0)
     
     fig2 = plt.figure(92)
     plt.pcolor(weights[2][:(31*31)].reshape(31,31))
-    fig2.savefig('plots/weihts2.png', bbox_inches=0)
+    fig2.savefig('plots/weights2.png', bbox_inches=0)
 
     fig3 = plt.figure(93)
     plt.pcolor(weights[3][:(31*31)].reshape(31,31))
-    fig3.savefig('plots/weihts3.png', bbox_inches=0)
+    fig3.savefig('plots/weights3.png', bbox_inches=0)
 
     fig4 = plt.figure(94)
     plt.pcolor(weights[4][:(31*31)].reshape(31,31))
-    fig4.savefig('plots/weihts4.png', bbox_inches=0)
+    fig4.savefig('plots/weights4.png', bbox_inches=0)
 
     fig5 = plt.figure(95)
     plt.pcolor(weights[5][:(31*31)].reshape(31,31))
-    fig5.savefig('plots/weihts5.png', bbox_inches=0)
+    fig5.savefig('plots/weights5.png', bbox_inches=0)
 
     fig6 = plt.figure(96)
     plt.pcolor(weights[6][:(31*31)].reshape(31,31))
-    fig6.savefig('plots/weihts6.png', bbox_inches=0)
+    fig6.savefig('plots/weights6.png', bbox_inches=0)
 
     fig7 = plt.figure(97)
     plt.pcolor(weights[7][:(31*31)].reshape(31,31))
-    fig7.savefig('plots/weihts7.png', bbox_inches=0)
+    fig7.savefig('plots/weights7.png', bbox_inches=0)
 
     fig8 = plt.figure(98)
     plt.pcolor(weights[8][:(31*31)].reshape(31,31))
-    fig8.savefig('plots/weihts8.png', bbox_inches=0)
+    fig8.savefig('plots/weights8.png', bbox_inches=0)
 
 
 '''

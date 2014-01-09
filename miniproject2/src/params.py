@@ -17,8 +17,9 @@ POS_RANGE = [0.0, 1.0]
 VEL_RANGE = [-1.0, 1.0]
 STATIC_VEL_RANGE = [0.0, 0.0]
 NB_OUTPUTS = 9
+MAX_TIME = 1000
 
-LEARNING_CURVE_FILE = 'learning_curve.data'
+LEARNING_CURVE_FILE = 'smart_learning_curve.data'
 #LEARNING_CURVE_FILE = 'epsilon_1_lc.data'
 #FILENAME = 'learning_curve.data'
 COUNTER = 0
