@@ -29,6 +29,39 @@ def plot(neuron, it):
 '''
 
 
+def plot_navigation_map(car, t):
+    nnet = car.neuralNetwork
+
+    p_range = np.linspace(0, 1, 51)
+    arrows = np.zeros((len(p_range)**2, 4))
+
+    index = -1
+    for x in p_range:
+        for y in p_range:
+            index += 1
+            pos = np.array((x, y))
+            vel = np.array((0.0, 0.0))
+            nnet.compute_network_output(pos, vel)
+            d = np.array(car.get_action_direction(nnet.Q_outputs.argmax()))
+
+            arrows[index,0] = x
+            arrows[index,1] = y
+            arrows[index,2] = 1./60*d[0]
+            arrows[index,3] = 1./60*d[1]
+
+    X,Y,U,V = zip(*arrows)
+
+    plt.figure(t+1)
+    ax = plt.gca()
+    ax.quiver(X,Y,U,V, angles='xy', scale_units='xy', scale=1)
+    ax.set_xlim([-0.1, 1.1])
+    ax.set_ylim([-0.1, 1.1])
+    plt.title('Navigation map after %d trials'%t)
+    #plt.draw()
+    plt.savefig("plots/nmap_%d.png"%t, bbox_inches=0)
+            
+
+
 def plotInput(patch, iter, time):
 
     #patch.shape = 16, 16

@@ -120,6 +120,7 @@ class car:
         NOTE: it is assumed that the underlying neural network has already
         computed Q values for given position/velocity
         """
+        #return self.decaying_e_greedy_policy()
         return self.e_greedy_policy()
 
     def decaying_e_greedy_policy(self):
@@ -131,7 +132,15 @@ class car:
         Q = self.neuralNetwork.Q_outputs
         assert len(Q) == params.NB_OUTPUTS
 
-        if (np.random.random() < 1-params.EPSILON-1.0/(self.time+1)):
+        if self.time < params.STOP_DECAY:
+            delta_eps = params.EPSILON_START - params.EPSILON
+            eps = -delta_eps*self.time/params.STOP_DECAY + params.EPSILON_START
+        else: 
+            eps = params.EPSILON
+
+        threshold = (1 - eps)
+
+        if np.random.random() < threshold:
             return Q.argmax() #this returns index
         else:
             return np.random.randint(0, len(Q)-1) #this returns value!

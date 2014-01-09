@@ -2,6 +2,8 @@ from pylab import *
 import params
 import car
 import track
+import params
+
 import numpy as np
 from plotter import *
 import neural_network as nn
@@ -27,10 +29,10 @@ def train_car(save_learning_curve = False):
     n_time_steps = 1000 # maximum time steps for each trial
 
     if save_learning_curve:
-        learn_curve_file = open(params.FILENAME, 'a')
-       
-    '''
-    my_net = nn.NeuralNetwork(params.POS_NEURONS, params.POS_RANGE, 
+        learn_curve_file = open(params.LEARNING_CURVE_FILE, 'a')
+    
+    '''    
+    net = nn.NeuralNetwork(params.POS_NEURONS, params.POS_RANGE, 
                 params.VEL_NEURONS, params.STATIC_VEL_RANGE, params.NB_OUTPUTS, 
                 params.ETA, params.GAMMA, params.LAMBDA)
     
@@ -60,6 +62,9 @@ def train_car(save_learning_curve = False):
             # check if the race is over
             if monaco.finished is True:
                 break
+        else:
+            print "Did not finish the track"
+            print "Total reward:", monaco.total_reward
 
         if save_learning_curve:
             print >> learn_curve_file, \
@@ -72,6 +77,10 @@ def train_car(save_learning_curve = False):
         if j%10 == 0:
             print
             print 'TRIAL:', j
+
+        # uncomment only when plotting navigation maps
+        #if (j+1)%100 == 0:
+        #    plot_navigation_map(ferrari, j+1)
 
     if save_learning_curve:
         learn_curve_file.close()
