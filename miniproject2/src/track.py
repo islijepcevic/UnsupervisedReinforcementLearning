@@ -173,7 +173,7 @@ class track:
         
         figsize = 0.15
         imshow(self.car_img[:,::-1],extent=(self.pos[0]-figsize/2,self.pos[0]+figsize/2,self.pos[1]-figsize/2,self.pos[1]+figsize/2))
-        handle.savefig("smart_trajectory_%d.png"%params.COUNTER)
+        handle.savefig("trajectory_%d.png"%params.COUNTER)
         params.COUNTER +=1
         title(self.message)
         
@@ -227,10 +227,10 @@ class track:
             # if the goal was reached.
 
             # calculate the reward given
-            rew = params.MAX_TIME-self.time #self.max_rew #  TODO: TRY  
+            rew = self.max_rew #  TODO: TRY self.time # 
 
             print 'Finish line! Time steps:', self.time
-            print 'Total reward:', params.MAX_TIME-self.time #self.total_reward
+            print 'Total reward:', self.total_reward
             self.message = 'Finish!'
             self.finished = True
 
