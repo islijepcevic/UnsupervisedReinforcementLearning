@@ -79,8 +79,8 @@ def train_car(save_learning_curve = False):
             print 'TRIAL:', j
 
         # uncomment only when plotting navigation maps
-        #if (j+1)%100 == 0:
-        #    plot_navigation_map(ferrari, j+1)
+        if (j+1)%100 == 0:
+            plot_navigation_map(ferrari, j+1)
 
     if save_learning_curve:
         learn_curve_file.close()
