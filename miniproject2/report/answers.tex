@@ -125,10 +125,25 @@ parameter. This shows the effect of exploration-exploitation tradeoff}
 \end{figure}
  
 
-
-
 \paragraph{Navigation map}
+A navigation map shows where our agent would go based on the position it is
+currently in. Some navigation maps can be seen in the Figure~\ref{fig:navmap}.
+It is clearly visible how navigation maps resemble the environment track to
+learn in as the learning time passes by.
 
+\begin{figure}[h!]
+\centering
+\begin{subfigure}[b]{0.6\textwidth}
+    \includegraphics[width=\textwidth]{figures/nmap_100.png}
+\end{subfigure}
+\begin{subfigure}[b]{0.6\textwidth}
+    \includegraphics[width=\textwidth]{figures/nmap_400.png}
+\end{subfigure}
+\begin{subfigure}[b]{0.6\textwidth}
+    \includegraphics[width=\textwidth]{figures/nmap_1000.png}
+\end{subfigure}
+\caption{\label{fig:navmap}Navigation maps at different learning stages}
+\end{figure}   
 
 \section{Car race}
 comment on our changes (if we actually do this)
