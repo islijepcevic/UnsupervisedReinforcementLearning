@@ -44,15 +44,15 @@ values can be seen in Figure~\ref{fig:eps}. When $\epsilon$ is too small
 often happens that the agent does not explore the majority of solutions and it
 is clearly visible from the learning curve in Figure~\ref{fig:eps0} that it did
 not gain almost any knowledge about the track. The latency does not decrease and
-the variance is huge during the whole learning. On the other hand, setting
+the variance is large during the learning process. On the other hand, setting
 $\epsilon$ to high values ($\epsilon \ge 0.5$) employs too much exploration such
-that the agent rarely has the chance to apply what it's learnt and wanders
+that the agent rarely has the chance to apply what it has learned and wanders
 around the map too much, which is also visible from the learning curve
-(Figure~\ref{fig:eps5} and Figure~\ref{fig:eps10}). The best observed values for
+(Figure \ref{fig:eps5} and Figure~\ref{fig:eps10}). The best observed values for
 $\epsilon$ are when it is slightly lower than $0.1$, for example $\epsilon =
 0.05$ shown in Figure~\ref{fig:eps05}.  One additional insight to the influence
 of $\epsilon$ parameter can be observed in Table~\ref{tab:perf}. Same
-conclusions could be drawn from that table, the best values again being for
+conclusions could be drawn from that table, the best values again being
 $\epsilon \in [0.05, 0.1]$.
 
 In addition, we tried to improve the performance of our agent by decreasing
@@ -83,10 +83,10 @@ $0.5$ & $223.71$ & $91\%$ \\
 $1.0$ & $609.82$ & $35\%$ \\
 \hline
 \end{tabular}
-\caption{\label{tab:perf}Table showing performance quantification for varying
+\caption{\label{tab:perf}Navigation performance with varying
 $\epsilon$. For each value of $\epsilon$ we trained $10$ agents. Performance is
-measured as average latency for an agent in the last $10$ trials of any learning
-session, provided that agent finished the race. The percentage in the third
+measured as the average latency for an agent in the last $10$ trials of any learning
+session, provided that the agent finishes the race. The percentage in the third
 column shows how many of the observed agents managed to finish the race (and
 hence are counted in the average).}
 \end{table}
@@ -125,9 +125,12 @@ parameter. This shows the effect of exploration-exploitation tradeoff}
 \end{figure}
  
 
-%\newpage
+
 \paragraph{Navigation map}
-A navigation map shows where our agent would go based on the position it is
+
+We show the evolution of the navigation path for the learning agent. At first the agent has no knowledge of the value function describing the track, and we see in Fig. \ref{fig:navmap} that if the agent takes these actions, there are many regions where it could get stuck. With more "experience" (i.e. as learning progresses), agent discovers the reward location and also learns more about the world. We observe that at trial 1000 the value function describing the world provides much more information about the track than it did in the earlier trials, as would be expected after learning. In this last figure, we see the form of a line on the left-hand side where "action" arrows point toward each other. This line outlines actions for a collison-free path.    
+
+A navigation map shows where the agent would go based on the position it is
 currently in. Some navigation maps can be seen in the Figure~\ref{fig:navmap}.
 It is clearly visible how navigation maps resemble the environment track to
 learn in as the learning time passes by.
