@@ -38,9 +38,29 @@ learning.
 \paragraph{Exploration-exploitation}
 
 
-
+\newpage
 \paragraph{Navigation map}
 
+We show the evolution of the learning agent's path over trials. At first the agent has no knowledge of the value function describing the track, so we see it move randomly in Fig. \ref{fig:trial0} until it discovers the reward location in later trials Fig. \ref{fig:trial4}. We observe in Fig. \ref{fig:trial9} it has learned to avoid hitting walls and can reach the reward location using a more efficient path as compared to previous trials. 
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{../src/trajectory_0.png}
+\caption{Car trajectory at trial 0. \label{fig:trial0}}
+\end{figure}
+
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{../src/trajectory_4.png}
+\caption{Car trajectory at trial 4. \label{fig:trial4}}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{../src/trajectory_9.png}
+\caption{Car trajectory at trial 9. \label{fig:trial9}}
+\end{figure}
 
 \section{Car race}
-comment on our changes (if we actually do this)
+We have modified the car to be rewarded by the amount of time left in the trial rather than an absolute maximum reward value. 
