@@ -1,6 +1,7 @@
 from pylab import *
 import matplotlib.image as im
 import time
+import params
 
 class track:
     
@@ -137,7 +138,7 @@ class track:
         
     def plot_world(self):
         # plots the track with the history of movements
-        figure(100)
+        handle= figure(100)
         clf()
         xlim(-0.1,1.1)
         ylim(-0.1,1.1)
@@ -172,7 +173,8 @@ class track:
         
         figsize = 0.15
         imshow(self.car_img[:,::-1],extent=(self.pos[0]-figsize/2,self.pos[0]+figsize/2,self.pos[1]-figsize/2,self.pos[1]+figsize/2))
-        
+        handle.savefig("trajectory_%d.png"%params.COUNTER)
+        params.COUNTER +=1
         title(self.message)
         
         draw()
@@ -184,7 +186,7 @@ class track:
         if self.plotting and (self.time+1)%20 == 0:
             self.plot_world()
             time.sleep(0.005)         # slows down the simulation for watching the race
-    
+            # save the plot!    
     def move(self,action): 
         # this is the main method, called when an action is taken.
         # the action should be a integer between 0 and 8, indicating the direction of acceleration.
